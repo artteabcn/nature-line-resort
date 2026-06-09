@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@source "../../**/*.{ts,tsx}";
+
+@theme {
+  /* Nature Line Resort brand colours — pink + blue-green, refined boutique */
+  --color-brand-pink: #1a6b8a;
+  --color-brand-pink-light: #c4dfe8;
+  --color-brand-pink-dark: #0e4a62;
+  --color-brand-blush: #f0f7fb;
+  --color-brand-cream: #f5fafd;
+
+  /* Blue-green — drives ALL text colours and accents */
+  --color-brand-teal: #c9a840;
+  --color-brand-teal-light: #f5eac4;
+  --color-brand-teal-dark: #8a7020;
+  --color-brand-teal-deep: #504010;
+
+  /* Tropical highlights (used sparingly) */
+  --color-brand-coral: #e08060;
+  --color-brand-peach: #f0c078;
+
+  /* Ink — teal-tinted, never black. */
+  --color-brand-ink: #c9a840;
+  --color-brand-ink-soft: #4a7a8a;
+  --color-brand-charcoal: #8a7020; /* alias for legacy uses (footer bg) */
+
+  /* Typography */
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Libre Baskerville", ui-serif, Georgia, serif;
+  --font-script: "Great Vibes", "Brush Script MT", cursive;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-brand-cream);
+    color: var(--color-brand-ink);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: var(--color-brand-ink);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+}
+
+@layer utilities {
+  .font-script {
+    font-family: var(--font-script);
+  }
+
+  .section-label {
+    @apply text-brand-teal text-xs font-semibold tracking-[0.3em] uppercase;
+  }
+
+  .section-title {
+    @apply font-script text-brand-teal text-5xl leading-[1.05] md:text-6xl lg:text-7xl;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .hero-title {
+    @apply font-script text-6xl leading-[1.05] text-white md:text-7xl lg:text-[7.5rem];
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .section-subtitle {
+    @apply mt-5 max-w-2xl text-base leading-relaxed text-[color:var(--color-brand-ink-soft)] md:text-lg;
+  }
+
+  .btn-pill-primary {
+    @apply bg-brand-pink hover:bg-brand-pink-dark inline-flex items-center justify-center rounded-full px-7 py-3 text-xs font-semibold tracking-[0.2em] text-white uppercase transition-colors;
+  }
+
+  .btn-pill-outline {
+    @apply border-brand-teal text-brand-teal hover:bg-brand-teal inline-flex items-center justify-center rounded-full border px-6 py-2.5 text-[11px] font-semibold tracking-[0.2em] uppercase transition-colors hover:text-white;
+  }
+
+  .btn-pill-light {
+    @apply hover:text-brand-ink inline-flex items-center justify-center rounded-full border border-white/70 px-7 py-3 text-xs font-semibold tracking-[0.2em] text-white uppercase backdrop-blur-sm transition-colors hover:bg-white;
+  }
+}

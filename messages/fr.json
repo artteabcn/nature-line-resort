@@ -1,0 +1,250 @@
+{
+  "seo": {
+    "home": {
+      "title": "Nature Line Resort — Bed & Breakfast de charme à Khanom, Khanom",
+      "description": "B&B familial de charme à Khanom, Khanom. Piscine, petit-déjeuner, à deux pas de la plage. Anglais, français, allemand et thaï parlés. Réservez en direct au meilleur prix."
+    },
+    "book": {
+      "title": "Réserver votre séjour — Nature Line Resort",
+      "description": "Réservez votre chambre en direct au Nature Line Resort Khanom, Khanom. Disponibilités en temps réel, sans frais de réservation, confirmation immédiate."
+    },
+    "ogAlt": "Nature Line Resort Bed & Breakfast — Khanom, Khanom",
+    "keywords": "B&B Koh Samui, chambre d'hôte Khanom, maison d'hôtes Koh Samui, Nature Line Resort Samui, où dormir à Khanom"
+  },
+  "nav": {
+    "about": "À propos",
+    "rooms": "Chambres",
+    "amenities": "Équipements",
+    "gallery": "Galerie",
+    "contact": "Contact",
+    "bookNow": "Réserver"
+  },
+  "hero": {
+    "tagline": "Votre maison à Koh Samui",
+    "headline": "Nature Line Resort",
+    "subheadline": "Une chambre d'hôtes chaleureuse et accueillante au cœur de Koh Samui, Thaïlande.",
+    "cta": "Réserver votre séjour",
+    "discover": "Découvrir"
+  },
+  "about": {
+    "label": "Notre histoire",
+    "title": "Un chez-soi loin de chez soi",
+    "p1": "Nature Line Resort est une charmante chambre d'hôtes sur la magnifique île de Koh Samui, en Thaïlande. Nous proposons des chambres confortables, une atmosphère chaleureuse et un service personnalisé en anglais, français, allemand et thaï.",
+    "p2": "Que vous soyez là pour une courte escapade ou un long séjour, notre équipe est dédiée à rendre chaque moment de votre visite inoubliable. Réveillez-vous avec un petit-déjeuner frais, plongez dans la piscine et laissez la magie de l'île faire le reste.",
+    "stat1Value": "10+",
+    "stat1Label": "Années d'accueil",
+    "stat2Value": "4",
+    "stat2Label": "Langues parlées",
+    "stat3Value": "100%",
+    "stat3Label": "Service personnalisé"
+  },
+  "rooms": {
+    "label": "Hébergement",
+    "title": "Nos Chambres",
+    "subtitle": "Chaque chambre est aménagée avec soin pour allier confort, style et l'esprit décontracté de la vie insulaire.",
+    "perNight": "/ nuit",
+    "from": "À partir de",
+    "guests": "personnes",
+    "book": "Réserver cette chambre",
+    "cta": "Vérifier les disponibilités",
+    "feature1": "Lit king size avec linge de qualité",
+    "feature2": "Climatisation & salle de bain privative",
+    "feature3": "Terrasse privée donnant sur le jardin",
+    "feature4": "Ménage quotidien & petit-déjeuner frais",
+    "items": [
+      {
+        "id": "cosy",
+        "name": "Chambre Cosy",
+        "description": "Notre refuge le plus intime — une chambre lumineuse et climatisée avec un lit king, une salle de bain privative et une terrasse privée. La base insulaire idéale et paisible pour deux, à quelques pas de la piscine.",
+        "price": 1300,
+        "currency": "THB",
+        "maxGuests": 2,
+        "beds": "1 lit king",
+        "view": "Vue jardin & piscine"
+      },
+      {
+        "id": "deluxe",
+        "name": "Chambre Deluxe",
+        "description": "Un séjour plus spacieux au confort raffiné — lit king, salle de bain privative, climatisation et terrasse privée donnant sur le jardin et la piscine. Une escapade élégante et détendue pour deux.",
+        "price": 1600,
+        "currency": "THB",
+        "maxGuests": 2,
+        "beds": "1 lit king",
+        "view": "Vue jardin & piscine"
+      },
+      {
+        "id": "family",
+        "name": "Chambre Familiale",
+        "description": "De la place pour toute la famille — un lit king et un lit simple, une salle de bain privative et une terrasse privée. Couchage confortable pour trois, avec la piscine, le petit-déjeuner et le jardin juste devant votre porte.",
+        "price": 1400,
+        "currency": "THB",
+        "maxGuests": 3,
+        "beds": "1 lit king + 1 lit simple",
+        "view": "Vue jardin & piscine"
+      }
+    ]
+  },
+  "amenities": {
+    "label": "Équipements",
+    "title": "Tout ce dont vous avez besoin",
+    "subtitle": "Tout le confort d'un chez-soi, avec la chaleur d'une maison d'hôtes boutique.",
+    "servicesLink": "Voir nos services payants & tarifs",
+    "items": [
+      {
+        "icon": "pool",
+        "title": "Piscine",
+        "desc": "Piscine extérieure ouverte tous les jours de 7h à 21h"
+      },
+      {
+        "icon": "wifi",
+        "title": "Wi-Fi gratuit",
+        "desc": "Internet haut débit dans toute la propriété"
+      },
+      {
+        "icon": "ac",
+        "title": "Climatisation",
+        "desc": "Contrôle individuel du climat dans chaque chambre"
+      },
+      {
+        "icon": "breakfast",
+        "title": "Petit-déjeuner inclus",
+        "desc": "Petit-déjeuner frais quotidien avec options locales et occidentales"
+      },
+      {
+        "icon": "whatsapp",
+        "title": "Support WhatsApp",
+        "desc": "Contactez-nous à tout moment via WhatsApp"
+      },
+      {
+        "icon": "transfer",
+        "title": "Transfert aéroport",
+        "desc": "Navette pratique sur demande"
+      },
+      {
+        "icon": "cleaning",
+        "title": "Ménage quotidien",
+        "desc": "Chambres entretenues chaque matin"
+      },
+      {
+        "icon": "languages",
+        "title": "Personnel multilingue",
+        "desc": "Assistance en anglais, français, allemand et thaï"
+      }
+    ]
+  },
+  "gallery": {
+    "label": "Galerie",
+    "title": "La vie au Nature Line Resort"
+  },
+  "testimonials": {
+    "label": "Avis clients",
+    "title": "Des souvenirs qui durent",
+    "items": [
+      {
+        "quote": "Séjourner au Nature Line Resort a été le point fort de notre voyage à Koh Samui. La chaleur des hôtes et le jardin magnifique nous ont tout de suite mis à l'aise.",
+        "name": "Sophie & Marc",
+        "origin": "Lyon, France"
+      },
+      {
+        "quote": "Le B&B le plus charmant que nous ayons jamais visité. Le petit-déjeuner était exceptionnel, la chambre impeccable et l'emplacement parfait pour explorer l'île.",
+        "name": "James & Karen",
+        "origin": "Londres, Royaume-Uni"
+      },
+      {
+        "quote": "Nous y sommes revenus pour la troisième fois cette année — cela dit tout. Le Nature Line Resort n'est pas seulement un endroit où dormir, c'est un endroit où l'on se sent chez soi.",
+        "name": "Thomas",
+        "origin": "Munich, Allemagne"
+      }
+    ]
+  },
+  "contact": {
+    "label": "Nous trouver",
+    "title": "Contactez-nous",
+    "subtitle": "Nous serions ravis de vous entendre. Contactez-nous par WhatsApp, e-mail ou via le formulaire ci-dessous.",
+    "address": "123 Moo 4, Khanom, Khanom, Surat Thani 84310, Thaïlande",
+    "phone": "PLACEHOLDER_PHONE_DISPLAY",
+    "email": "hello@nature-line-resortkhanom.com",
+    "whatsapp": "Discuter sur WhatsApp",
+    "form": {
+      "name": "Votre nom",
+      "email": "Adresse e-mail",
+      "phone": "Téléphone / WhatsApp",
+      "message": "Message",
+      "submit": "Envoyer le message",
+      "sending": "Envoi en cours...",
+      "success": "Message envoyé ! Nous répondrons dans les 24 heures.",
+      "error": "Une erreur s'est produite. Veuillez réessayer ou nous contacter directement."
+    }
+  },
+  "bookPage": {
+    "label": "Réservations",
+    "title": "Réserver votre séjour",
+    "subtitle": "Vérifiez les disponibilités et réservez directement. Meilleurs tarifs garantis — sans frais de réservation."
+  },
+  "booking": {
+    "title": "Réserver votre séjour",
+    "checkIn": "Arrivée",
+    "checkOut": "Départ",
+    "adults": "Adultes",
+    "children": "Enfants",
+    "findRooms": "Voir les chambres disponibles",
+    "searching": "Vérification des disponibilités...",
+    "noRooms": "Aucune chambre disponible pour ces dates. Essayez d'autres dates.",
+    "minStayNotice": "Ces dates exigent un séjour minimum de {nights} nuits. Veuillez choisir une période plus longue.",
+    "select": "Sélectionner",
+    "totalFor": "Total pour {nights} nuits",
+    "perNight": "/ nuit",
+    "back": "Retour",
+    "guestTitle": "Vos coordonnées",
+    "summary": "Votre séjour",
+    "name": "Nom complet",
+    "email": "E-mail",
+    "phone": "Téléphone / WhatsApp",
+    "notes": "Demandes spéciales (facultatif)",
+    "confirm": "Procéder au paiement",
+    "confirming": "Préparation du paiement...",
+    "paymentTitle": "Sécuriser votre réservation",
+    "paymentSubtitle": "Versez un acompte non remboursable de {percent}%. Le solde est payable à l'arrivée en espèces ou par carte.",
+    "depositLabel": "Acompte ({percent}%)",
+    "balanceDueLabel": "Solde à régler à l'arrivée",
+    "totalStayLabel": "Total du séjour",
+    "nonRefundableNotice": "Cet acompte est non remboursable. Aucun remboursement en cas d'annulation ou de non-présentation.",
+    "acknowledgeNonRefundable": "Je comprends que l'acompte est non remboursable.",
+    "acknowledgeRequired": "Veuillez d'abord accepter la politique d'acompte non remboursable.",
+    "orPayWithCard": "Ou payer par carte",
+    "payNow": "Verser l'acompte {amount} THB",
+    "payProcessing": "Traitement du paiement...",
+    "paySecureNotice": "Paiement sécurisé par Stripe. Vos coordonnées bancaires ne transitent jamais par nos serveurs.",
+    "payError": "Le paiement n'a pas pu aboutir. Essayez une autre carte ou contactez-nous.",
+    "paidLabel": "Acompte versé",
+    "successTitle": "Réservation confirmée",
+    "successDetail": "Une confirmation a été envoyée par e-mail. Réservation n°{id}.",
+    "errorTitle": "Une erreur s'est produite",
+    "errorDetail": "Veuillez réessayer ou nous contacter via WhatsApp."
+  },
+  "emails": {
+    "bookingConfirmation": {
+      "subject": "Réservation confirmée — Nature Line Resort",
+      "preheader": "Votre séjour est confirmé. Voici les détails.",
+      "greeting": "Merci, {name} !",
+      "intro": "Votre séjour à Nature Line Resort est confirmé. Vous trouverez ci-dessous tous les détails — gardez cet e-mail à portée de main pour votre arrivée.",
+      "stayTitle": "Votre séjour",
+      "roomLabel": "Chambre",
+      "checkInLabel": "Arrivée",
+      "checkOutLabel": "Départ",
+      "guestsLabel": "Voyageurs",
+      "reservationLabel": "Réservation",
+      "paymentTitle": "Paiement",
+      "totalLabel": "Total du séjour",
+      "depositLabel": "Acompte versé",
+      "balanceLabel": "Solde dû à l'arrivée",
+      "balanceNote": "Le solde est payable à l'arrivée en espèces ou par carte.",
+      "nonRefundableNote": "L'acompte est non remboursable. Aucun remboursement en cas d'annulation ou de non-présentation.",
+      "contactTitle": "Une question ?",
+      "contactBody": "Répondez à cet e-mail ou écrivez-nous sur WhatsApp au {phone} — nous serons heureux de vous aider pour les transferts aéroport, l'heure d'arrivée ou toute autre demande avant votre séjour.",
+      "signOff": "À très vite,",
+      "houseName": "Nature Line Resort",
+      "houseAddress": "Khanom, Khanom, Surat Thani 84310, Thaïlande"
+    }
+  }
+}

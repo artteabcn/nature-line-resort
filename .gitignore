@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+
+# OpenNext / Cloudflare
+.open-next/
+.wrangler/
+
+# Environment
+.env.local
+.env.*.local
+
+# Build output
+dist/
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Claude Code
+.claude/settings.local.json
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Drizzle migrations (keep schema, ignore generated sql if preferred)
+# drizzle/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*

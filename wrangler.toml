@@ -1,0 +1,27 @@
+name = "nature-line-resort"
+compatibility_date = "2025-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+pages_build_output_dir = ".open-next"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "nature-line-resort"
+database_id = "PLACEHOLDER_DB_ID"
+migrations_dir = "drizzle"
+
+# CMS media bucket — created once via:
+#   wrangler r2 bucket create naturelineresort-media
+# Public objects are served from MEDIA_PUBLIC_URL (env var pointing at the
+# R2 public bucket URL or a custom domain like media.nature-line-resortkhanom.com).
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "naturelineresort-media"
+
+[vars]
+# Comma-separated — owner-email.ts splits on "," to notify all recipients
+OWNER_EMAIL = "hello@nature-line-resortkhanom.com"
+OWNER_FROM_EMAIL = "hello@nature-line-resortkhanom.com"
+
+[dev]
+port = 8788
