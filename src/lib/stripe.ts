@@ -2,6 +2,7 @@
 // Uses the fetch-based HTTP client so it runs in Cloudflare's edge runtime
 // (the default Node http client isn't available on Workers/Pages).
 import Stripe from "stripe";
+import { COMMISSION_PERCENT } from "@/config/payments";
 
 // Cache a single client per worker isolate.
 let cached: Stripe | null = null;
@@ -27,6 +28,19 @@ export interface CreateIntentInput {
 
 export async function createPaymentIntent(input: CreateIntentInput): Promise<Stripe.PaymentIntent> {
   const stripe = getClient();
+  // Merchant-of-Record: every clone charge settles in Arkadya's single Stripe
+  // account. Tag the intent with the commission split + which clone produced it,
+  // so owner payouts can be reconciled straight from Stripe. `amount` is the full
+  // booking in satang under full prepayment (DEPOSIT_PERCENT = 100).
+  const totalThb = Math.round(input.amount / 100);
+  const commissionThb = Math.round((totalThb * COMMISSION_PERCENT) / 100);
+  const morMetadata: Record<string, string> = {
+    merchantOfRecord: "arkadya",
+    commissionPercent: String(COMMISSION_PERCENT),
+    commissionThb: String(commissionThb),
+    ownerPayoutThb: String(totalThb - commissionThb),
+    cloneSlug: process.env.CLONE_SLUG ?? "",
+  };
   return stripe.paymentIntents.create({
     amount: input.amount,
     currency: input.currency,
@@ -34,7 +48,7 @@ export async function createPaymentIntent(input: CreateIntentInput): Promise<Str
     automatic_payment_methods: { enabled: true },
     receipt_email: input.receiptEmail,
     description: input.description,
-    metadata: input.metadata,
+    metadata: { ...input.metadata, ...morMetadata },
   });
 }
 

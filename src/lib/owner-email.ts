@@ -3,6 +3,7 @@
 // HTTP-based provider is used for both guest and owner mail.
 
 import { sendEmail } from "@/lib/resend";
+import { COMMISSION_PERCENT, commissionAmount, ownerPayout } from "@/config/payments";
 
 interface OwnerEmailParams {
   subject: string;
@@ -64,9 +65,17 @@ export function bookingOwnerEmail(data: {
   ];
   if (data.totalPrice !== undefined) {
     rows.push(["Total stay", `${data.totalPrice.toLocaleString()} THB`]);
+    rows.push([
+      `Arkadya commission (${COMMISSION_PERCENT}%)`,
+      `-${commissionAmount(data.totalPrice).toLocaleString()} THB`,
+    ]);
+    rows.push([
+      "Your payout (we remit this)",
+      `${ownerPayout(data.totalPrice).toLocaleString()} THB`,
+    ]);
   }
   if (hasDeposit && data.depositPaid !== undefined) {
-    rows.push(["Deposit paid", `${data.depositPaid.toLocaleString()} THB`]);
+    rows.push(["Paid online (full)", `${data.depositPaid.toLocaleString()} THB`]);
   }
   if (data.balanceDue !== undefined && data.balanceDue > 0) {
     rows.push(["Balance due on arrival", `${data.balanceDue.toLocaleString()} THB`]);

@@ -649,10 +649,12 @@ function PaymentStep({
             <span>{t("depositLabel", { percent: payment.depositPercent })}</span>
             <span>{payment.depositAmount.toLocaleString()} THB</span>
           </div>
-          <div className="text-brand-ink-soft flex justify-between">
-            <span>{t("balanceDueLabel")}</span>
-            <span>{payment.balanceDue.toLocaleString()} THB</span>
-          </div>
+          {payment.balanceDue > 0 && (
+            <div className="text-brand-ink-soft flex justify-between">
+              <span>{t("balanceDueLabel")}</span>
+              <span>{payment.balanceDue.toLocaleString()} THB</span>
+            </div>
+          )}
         </div>
       </div>
 

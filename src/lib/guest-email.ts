@@ -158,7 +158,7 @@ export function renderBookingConfirmation(input: BookingConfirmationInput): {
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:#f0f7fb;border-radius:12px;border-collapse:separate;">
           ${row(copy.totalLabel, `${fmt(input.totalPrice)} THB`)}
           ${rowHighlight(copy.depositLabel, `${fmt(input.depositPaid)} THB`)}
-          ${rowTotal(copy.balanceLabel, `${fmt(input.balanceDue)} THB`)}
+          ${input.balanceDue > 0 ? rowTotal(copy.balanceLabel, `${fmt(input.balanceDue)} THB`) : ""}
         </table>
         <p style="margin:12px 0 0;font-size:12px;line-height:18px;color:#4a7a8a;">${escapeHtml(copy.balanceNote)}</p>
         <p style="margin:8px 0 0;font-size:12px;line-height:18px;color:#0e4a62;">${escapeHtml(copy.nonRefundableNote)}</p>
