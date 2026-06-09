@@ -1,78 +1,78 @@
-// Authentication for /content/* and /api/admin/*.
+// Shared-password auth for /content and /api/admin/* across the Arkadya clone
+// fleet. A single ADMIN_PASSWORD env (shared, set per Cloudflare Pages project)
+// gates the CMS. Logging in (POST /api/admin/login) sets an HttpOnly cookie
+// whose value is an HMAC derived from the password; getAdminUser verifies it.
 //
-// Production: Cloudflare Access sits in front, blocks unauthenticated
-// traffic, and injects `cf-access-jwt-assertion` + `cf-access-authenticated-user-email`
-// headers. We verify the JWT against the CF Access JWKS for the team to
-// confirm authenticity, then read the email claim.
-//
-// Local dev: no CF Access running. We fall back to a fake "dev@local"
-// identity so the admin UI is usable via `pnpm dev`.
-
-import { jwtVerify, createRemoteJWKSet, type JWTVerifyResult } from "jose";
+// Local dev (NODE_ENV !== "production") bypasses to a dev identity so the admin
+// UI is usable via `pnpm dev`. Runs on the edge runtime — uses Web Crypto only.
 
 export interface AdminUser {
   email: string;
 }
 
-let jwksCache: ReturnType<typeof createRemoteJWKSet> | null = null;
-let cachedTeamDomain: string | null = null;
+export const ADMIN_COOKIE = "arkadya_admin";
+const SESSION_MSG = "arkadya-admin-session-v1";
 
-function getJwks(teamDomain: string): ReturnType<typeof createRemoteJWKSet> {
-  if (jwksCache && cachedTeamDomain === teamDomain) return jwksCache;
-  cachedTeamDomain = teamDomain;
-  jwksCache = createRemoteJWKSet(
-    new URL(`https://${teamDomain}.cloudflareaccess.com/cdn-cgi/access/certs`)
+export async function sessionToken(password: string): Promise<string> {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(password),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
   );
-  return jwksCache;
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(SESSION_MSG));
+  return Array.from(new Uint8Array(sig))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+export function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let out = 0;
+  for (let i = 0; i < a.length; i++) out |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return out === 0;
+}
+
+function readCookie(header: string | null, name: string): string | null {
+  if (!header) return null;
+  for (const part of header.split(";")) {
+    const eq = part.indexOf("=");
+    if (eq === -1) continue;
+    if (part.slice(0, eq).trim() === name) {
+      return decodeURIComponent(part.slice(eq + 1).trim());
+    }
+  }
+  return null;
 }
 
 export async function getAdminUser(headers: Headers): Promise<AdminUser | null> {
-  // Local-dev bypass: CF Access doesn't run under `next dev`, so we'd never
-  // be able to use the admin UI otherwise. Production builds set
-  // NODE_ENV=production automatically.
   if (process.env.NODE_ENV !== "production") {
     return { email: "dev@local" };
   }
 
-  const token = headers.get("cf-access-jwt-assertion");
-  if (!token) return null;
-
-  const teamDomain = process.env.CF_ACCESS_TEAM_DOMAIN;
-  const audience = process.env.CF_ACCESS_AUD;
-  if (!teamDomain || !audience) {
-    console.error(
-      "CF Access env missing: set CF_ACCESS_TEAM_DOMAIN and CF_ACCESS_AUD in Cloudflare Pages env."
-    );
+  const password = process.env.ADMIN_PASSWORD;
+  if (!password) {
+    console.error("ADMIN_PASSWORD not set — CMS is locked. Set it in Cloudflare Pages env.");
     return null;
   }
 
-  let result: JWTVerifyResult;
-  try {
-    result = await jwtVerify(token, getJwks(teamDomain), {
-      issuer: `https://${teamDomain}.cloudflareaccess.com`,
-      audience,
-    });
-  } catch (err) {
-    console.error("CF Access JWT verification failed:", err);
-    return null;
-  }
+  const cookie = readCookie(headers.get("cookie"), ADMIN_COOKIE);
+  if (!cookie) return null;
 
-  const email = typeof result.payload.email === "string" ? result.payload.email : null;
-  if (!email) return null;
-  return { email };
+  const expected = await sessionToken(password);
+  if (!timingSafeEqual(cookie, expected)) return null;
+
+  return { email: "admin@arkadya.tech" };
 }
 
-// Convenience for server components — reads from next/headers().
 export async function requireAdmin(): Promise<AdminUser> {
   const { headers } = await import("next/headers");
-  const hdrs = await headers();
-  const user = await getAdminUser(hdrs);
+  const user = await getAdminUser(await headers());
   if (!user) {
-    // Redirect to root so a hostile bypass doesn't hit edit UI.
     const { redirect } = await import("next/navigation");
-    redirect("/");
-    // redirect() throws — narrows TS by the time we get past it, but the
-    // dynamic import obscures the return type, so make it explicit:
+    redirect("/admin-login");
     throw new Error("unreachable");
   }
   return user;

@@ -5,5 +5,5 @@ export default createMiddleware(routing);
 
 export const config = {
   // `content` (admin UI) lives outside locale routing — no /en/content etc.
-  matcher: ["/((?!api|_next|_vercel|content|.*\\..*).*)"],
+  matcher: ["/((?!api|_next|_vercel|content|admin-login|.*\\..*).*)"],
 };
