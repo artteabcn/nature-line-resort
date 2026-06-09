@@ -41,6 +41,9 @@ export default async function ContentLayout({
                 <Link href="/content/rooms" className="hover:text-brand-pink">
                   Rooms
                 </Link>
+                <Link href="/content/facilities" className="hover:text-brand-pink">
+                  Facilities
+                </Link>
                 <Link href="/content/media" className="hover:text-brand-pink">
                   Media
                 </Link>

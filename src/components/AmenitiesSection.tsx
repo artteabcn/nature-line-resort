@@ -15,9 +15,21 @@ import {
   ChevronRight,
   Loader2,
   ConciergeBell,
+  SquareParking,
+  Utensils,
+  Wine,
+  Dumbbell,
+  Bath,
+  Umbrella,
+  Trees,
+  Tv,
+  PawPrint,
+  Baby,
+  Bike,
 } from "lucide-react";
 import type { PaidService } from "@/db/schema";
 
+// Keys must stay in sync with FACILITY_ICONS in src/lib/facility-icons.ts.
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   pool: Waves,
   wifi: Wifi,
@@ -27,6 +39,18 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   transfer: Car,
   cleaning: Sparkles,
   languages: Languages,
+  parking: SquareParking,
+  restaurant: Utensils,
+  bar: Wine,
+  gym: Dumbbell,
+  spa: Bath,
+  beach: Umbrella,
+  garden: Trees,
+  tv: Tv,
+  pets: PawPrint,
+  family: Baby,
+  bicycle: Bike,
+  concierge: ConciergeBell,
 };
 
 interface AmenityItem {

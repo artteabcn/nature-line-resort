@@ -89,11 +89,27 @@ function setByPath(root: Record<string, unknown>, path: string, value: string): 
     cursor = child as Record<string, unknown> | unknown[];
   }
   const lastKey = keys[keys.length - 1];
+  // Whole-array / object overrides (e.g. "amenities.items", "rooms.items") are
+  // stored as a JSON string; parse them so the leaf becomes a real array/object.
+  // Scalar string values pass through unchanged.
+  const finalValue = parseMaybeJson(value);
   if (Array.isArray(cursor)) {
-    cursor[Number(lastKey)] = value;
+    cursor[Number(lastKey)] = finalValue;
   } else {
-    cursor[lastKey] = value;
+    cursor[lastKey] = finalValue;
   }
+}
+
+function parseMaybeJson(value: string): unknown {
+  const trimmed = value.trim();
+  if (trimmed.startsWith("[") || trimmed.startsWith("{")) {
+    try {
+      return JSON.parse(trimmed);
+    } catch {
+      // Not valid JSON — treat as a plain string.
+    }
+  }
+  return value;
 }
 
 export async function listOverrides(locale: string): Promise<ContentOverride[]> {
