@@ -57,7 +57,7 @@ function LodgingJsonLd({ locale }: { locale: string }): React.JSX.Element {
     "@type": "LodgingBusiness",
     "@id": `${SITE_URL}/#lodging`,
     name: SITE.name,
-    description: "Boutique bed & breakfast in Khanom, Khanom, Thailand.",
+    description: "Boutique bed & breakfast in Khanom, Nakhon Si Thammarat, Thailand.",
     url: localePath(locale),
     image: [
       `${SITE_URL}${SITE.ogImage}`,

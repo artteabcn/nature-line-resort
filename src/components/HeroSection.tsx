@@ -25,7 +25,7 @@ export default async function HeroSection(): Promise<React.JSX.Element> {
 
       <div className="relative z-10 mx-auto max-w-3xl px-6 text-center text-white [text-shadow:0_2px_18px_rgba(0,0,0,0.55)]">
         <p className="mb-6 text-[10px] font-semibold tracking-[0.4em] text-white uppercase">
-          Khanom · Koh Samui · Thailand
+          Khanom · Nakhon Si Thammarat · Thailand
         </p>
         <h1 className="hero-title">{t("tagline")}</h1>
         <p className="mx-auto mt-7 max-w-xl text-base leading-relaxed text-white md:text-lg">
