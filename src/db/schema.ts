@@ -17,6 +17,8 @@ export const bookings = sqliteTable("bookings", {
   smoobuApartmentId: integer("smoobu_apartment_id"),
   smoobuReservationId: integer("smoobu_reservation_id"),
   channelId: integer("channel_id"),
+  beds24RoomId: integer("beds24_room_id"),
+  beds24BookingId: integer("beds24_booking_id"),
   totalPrice: integer("total_price"),
   currency: text("currency").default("THB"),
   paymentStatus: text("payment_status", {

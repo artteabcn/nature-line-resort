@@ -25,7 +25,7 @@ export default function AboutCarousel(): React.JSX.Element {
   useEffect(() => {
     if (paused) return;
     const id = window.setInterval(() => {
-      setActive((a) => (a + 1) % SLIDES.length);
+      setActive((a) => (a + 1) % slides.length);
     }, INTERVAL_MS);
     return (): void => window.clearInterval(id);
   }, [paused]);
@@ -62,7 +62,7 @@ export default function AboutCarousel(): React.JSX.Element {
             key={i}
             type="button"
             onClick={() => setActive(i)}
-            aria-label={`Show photo ${i + 1} of ${SLIDES.length}`}
+            aria-label={`Show photo ${i + 1} of ${slides.length}`}
             aria-current={i === active}
             className={cn(
               "h-2 rounded-full bg-white/70 transition-all duration-300 hover:bg-white",

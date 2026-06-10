@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AvailabilitySchema } from "@/lib/validations/availability";
-import { getRates, SmoobuError } from "@/lib/smoobu";
-import type { DailyRate } from "@/lib/smoobu";
-import { SMOOBU_APARTMENT_IDS, APARTMENT_TO_ROOM_ID } from "@/config/smoobu";
+import { getAccessToken, getCalendar, Beds24Error } from "@/lib/beds24";
+import type { DayCalendar } from "@/lib/beds24";
+import { BEDS24_PROPERTY_ID, BEDS24_ROOM_IDS, BEDS24_TO_ROOM_ID } from "@/config/beds24";
 
-interface AvailableApartment {
-  apartmentId: number;
+interface AvailableRoom {
+  beds24RoomId: number;
   roomId: string | null;
   totalPrice: number | null;
   currency: string;
@@ -24,6 +24,15 @@ function nightDates(arrival: string, departure: string): string[] {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  if (!BEDS24_PROPERTY_ID) {
+    return NextResponse.json({
+      available: [],
+      nights: 0,
+      minStayRequired: 1,
+      notConfigured: true,
+    });
+  }
+
   try {
     const body: unknown = await req.json();
     const parsed = AvailabilitySchema.safeParse(body);
@@ -32,38 +41,33 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     const { arrival, departure } = parsed.data;
-    const apartmentIds = [...SMOOBU_APARTMENT_IDS];
     const nights = nightDates(arrival, departure);
+    const arrivalDate = nights[0];
 
-    // Smoobu's /booking/checkApartmentAvailability requires a real customerId
-    // we don't have for anonymous visitors, so we derive availability from
-    // /rates instead — the rates payload gives us `available` (0|1) and
-    // `price` per night per apartment in a single call.
-    const rates = await getRates({
-      apartmentIds,
+    const token = await getAccessToken();
+    const calendar = await getCalendar({
+      token,
+      roomIds: BEDS24_ROOM_IDS,
       startDate: arrival,
       endDate: departure,
     });
 
-    const arrivalDate = nights[0];
-    const available: AvailableApartment[] = [];
-    // Smallest min-length-of-stay required to book *any* apartment on the
-    // arrival date, read live from Smoobu rather than hardcoded so seasonal
-    // changes to the rule surface automatically. Defaults to 1 night.
+    const available: AvailableRoom[] = [];
     let minStayRequired = Infinity;
-    for (const id of apartmentIds) {
-      const daily = rates[String(id)] ?? {};
-      const arrivalMinStay = daily[arrivalDate]?.min_length_of_stay;
-      if (typeof arrivalMinStay === "number" && arrivalMinStay > 0) {
-        minStayRequired = Math.min(minStayRequired, arrivalMinStay);
+
+    for (const id of BEDS24_ROOM_IDS) {
+      const daily = calendar[String(id)] ?? {};
+      const arrivalDay: DayCalendar = daily[arrivalDate] ?? {};
+      if (typeof arrivalDay.minStay === "number" && arrivalDay.minStay > 0) {
+        minStayRequired = Math.min(minStayRequired, arrivalDay.minStay);
       }
-      const nightlyRates: DailyRate[] = nights.map((d) => daily[d] ?? {});
-      const allAvailable = nightlyRates.every((r) => r.available === 1);
+      const nightlyData: DayCalendar[] = nights.map((d) => daily[d] ?? {});
+      const allAvailable = nightlyData.every((d) => d.available === 1);
       if (!allAvailable) continue;
-      const total = nightlyRates.reduce((sum, r) => sum + (r.price ?? 0), 0);
+      const total = nightlyData.reduce((sum, d) => sum + (d.price1 ?? 0), 0);
       available.push({
-        apartmentId: id,
-        roomId: APARTMENT_TO_ROOM_ID[id] ?? null,
+        beds24RoomId: id,
+        roomId: BEDS24_TO_ROOM_ID[id] ?? null,
         totalPrice: total > 0 ? total : null,
         currency: "THB",
         nights: nights.length,
@@ -76,10 +80,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       minStayRequired: Number.isFinite(minStayRequired) ? minStayRequired : 1,
     });
   } catch (err) {
-    if (err instanceof SmoobuError) {
-      console.error("Smoobu availability error", err.status, err.body);
+    if (err instanceof Beds24Error) {
+      console.error("Beds24 availability error", err.status, err.body);
       return NextResponse.json(
-        { error: "Smoobu API error", smoobuStatus: err.status, smoobuBody: err.body },
+        { error: "Beds24 API error", beds24Status: err.status },
         { status: 502 }
       );
     }

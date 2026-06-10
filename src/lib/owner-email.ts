@@ -81,7 +81,7 @@ export function bookingOwnerEmail(data: {
     rows.push(["Balance due on arrival", `${data.balanceDue.toLocaleString()} THB`]);
   }
   if (data.reservationId !== undefined) {
-    rows.push(["Smoobu reservation", `#${data.reservationId}`]);
+    rows.push(["Beds24 booking", `#${data.reservationId}`]);
   }
   if (data.notes) rows.push(["Notes", data.notes]);
 

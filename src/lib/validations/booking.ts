@@ -8,7 +8,7 @@ export const BookingSchema = z
     email: z.string().email("Invalid email address"),
     phone: z.string().min(6, "Phone number is required"),
     roomId: z.string().min(1),
-    apartmentId: z.coerce.number().int().positive().optional(),
+    beds24RoomId: z.coerce.number().int().positive().optional(),
     checkIn: z.string().regex(ISO_DATE, "Check-in must be YYYY-MM-DD"),
     checkOut: z.string().regex(ISO_DATE, "Check-out must be YYYY-MM-DD"),
     adults: z.coerce.number().int().min(1).max(10).default(2),

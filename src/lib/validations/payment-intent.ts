@@ -8,7 +8,7 @@ export const PaymentIntentSchema = z
     email: z.string().email(),
     phone: z.string().min(6),
     roomId: z.string().min(1),
-    apartmentId: z.coerce.number().int().positive(),
+    beds24RoomId: z.coerce.number().int().positive(),
     checkIn: z.string().regex(ISO_DATE),
     checkOut: z.string().regex(ISO_DATE),
     adults: z.coerce.number().int().min(1).max(10),

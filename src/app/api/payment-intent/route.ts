@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PaymentIntentSchema, type PaymentIntentInput } from "@/lib/validations/payment-intent";
-import { getRates, SmoobuError } from "@/lib/smoobu";
-import type { DailyRate } from "@/lib/smoobu";
-import { SMOOBU_APARTMENT_IDS, SMOOBU_CHANNEL_ID_DIRECT_WEBSITE } from "@/config/smoobu";
+import { getAccessToken, getCalendar, Beds24Error } from "@/lib/beds24";
+import type { DayCalendar } from "@/lib/beds24";
+import { BEDS24_PROPERTY_ID, BEDS24_ROOM_IDS } from "@/config/beds24";
 import { createPaymentIntent } from "@/lib/stripe";
 import { getDbOrNull } from "@/lib/db/get-db";
 import { bookings } from "@/db/schema";
@@ -20,23 +20,23 @@ function nightDates(arrival: string, departure: string): string[] {
 }
 
 async function priceQuote(
-  apartmentId: number,
+  beds24RoomId: number,
   checkIn: string,
   checkOut: string
 ): Promise<{ totalThb: number } | { error: string }> {
-  if (!SMOOBU_APARTMENT_IDS.includes(apartmentId as (typeof SMOOBU_APARTMENT_IDS)[number])) {
-    return { error: "Unknown apartment" };
-  }
-  const rates = await getRates({
-    apartmentIds: [apartmentId],
+  if (!BEDS24_ROOM_IDS.includes(beds24RoomId)) return { error: "Unknown room" };
+  const token = await getAccessToken();
+  const calendar = await getCalendar({
+    token,
+    roomIds: [beds24RoomId],
     startDate: checkIn,
     endDate: checkOut,
   });
-  const daily = rates[String(apartmentId)] ?? {};
-  const nightly: DailyRate[] = nightDates(checkIn, checkOut).map((d) => daily[d] ?? {});
+  const daily = calendar[String(beds24RoomId)] ?? {};
+  const nightly: DayCalendar[] = nightDates(checkIn, checkOut).map((d) => daily[d] ?? {});
   if (nightly.length === 0) return { error: "Empty stay" };
-  if (!nightly.every((r) => r.available === 1)) return { error: "Apartment unavailable" };
-  const total = nightly.reduce((sum, r) => sum + (r.price ?? 0), 0);
+  if (!nightly.every((d) => d.available === 1)) return { error: "Room unavailable" };
+  const total = nightly.reduce((sum, d) => sum + (d.price1 ?? 0), 0);
   if (total <= 0) return { error: "Could not price stay" };
   return { totalThb: Math.round(total) };
 }
@@ -61,15 +61,11 @@ async function insertPending(
       checkOut: data.checkOut,
       guests,
       notes: data.notes,
-      smoobuApartmentId: data.apartmentId,
-      channelId: SMOOBU_CHANNEL_ID_DIRECT_WEBSITE,
+      beds24RoomId: data.beds24RoomId,
       totalPrice: totalThb,
       currency: "THB",
       paymentStatus: "pending",
       stripePaymentIntentId: paymentIntentId,
-      // amountPaid is recorded at capture time; the deposit amount lives in
-      // the Stripe intent itself (intent.amount) and in this column once
-      // captured by /api/booking.
       amountPaid: depositThb,
       locale: data.locale,
     })
@@ -78,6 +74,10 @@ async function insertPending(
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  if (!BEDS24_PROPERTY_ID) {
+    return NextResponse.json({ error: "booking_not_configured" }, { status: 503 });
+  }
+
   let parsed: PaymentIntentInput;
   try {
     const body: unknown = await req.json();
@@ -92,15 +92,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   let totalThb: number;
   try {
-    const quote = await priceQuote(parsed.apartmentId, parsed.checkIn, parsed.checkOut);
+    const quote = await priceQuote(parsed.beds24RoomId, parsed.checkIn, parsed.checkOut);
     if ("error" in quote) {
       return NextResponse.json({ error: quote.error }, { status: 409 });
     }
     totalThb = quote.totalThb;
   } catch (err) {
-    if (err instanceof SmoobuError) {
+    if (err instanceof Beds24Error) {
       return NextResponse.json(
-        { error: "Smoobu API error", smoobuStatus: err.status },
+        { error: "Beds24 API error", beds24Status: err.status },
         { status: 502 }
       );
     }
@@ -109,7 +109,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const depositThb = depositAmount(totalThb);
   const balanceThb = balanceDue(totalThb);
-  // THB has 2 decimal places in Stripe (smallest unit = satang).
   const amountSatang = depositThb * 100;
 
   let intent;
@@ -118,9 +117,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       amount: amountSatang,
       currency: "thb",
       receiptEmail: parsed.email,
-      description: `${DEPOSIT_PERCENT}% non-refundable deposit — Nature Line Resort`,
+      description: `${DEPOSIT_PERCENT}% non-refundable deposit — Baan Thong Ching Resort`,
       metadata: {
-        apartmentId: String(parsed.apartmentId),
+        beds24RoomId: String(parsed.beds24RoomId),
         roomId: parsed.roomId,
         checkIn: parsed.checkIn,
         checkOut: parsed.checkOut,

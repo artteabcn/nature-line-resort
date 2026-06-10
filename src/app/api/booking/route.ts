@@ -3,8 +3,8 @@ import { eq } from "drizzle-orm";
 import { BookingSchema, type BookingInput } from "@/lib/validations/booking";
 import { sendOwnerEmail, bookingOwnerEmail } from "@/lib/owner-email";
 import { sendBookingConfirmation } from "@/lib/guest-email";
-import { createReservation, SmoobuError } from "@/lib/smoobu";
-import { ROOM_TO_APARTMENT_ID, SMOOBU_CHANNEL_ID_DIRECT_WEBSITE } from "@/config/smoobu";
+import { getAccessToken, createBooking, Beds24Error } from "@/lib/beds24";
+import { BEDS24_PROPERTY_ID, ROOM_TO_BEDS24_ID, BEDS24_SOURCE_ID_DIRECT } from "@/config/beds24";
 import { getDbOrNull } from "@/lib/db/get-db";
 import { bookings } from "@/db/schema";
 import { retrievePaymentIntent, capturePaymentIntent, cancelPaymentIntent } from "@/lib/stripe";
@@ -31,9 +31,9 @@ async function updateBooking(
 
 function intentMatchesBooking(intent: Stripe.PaymentIntent, parsed: BookingInput): boolean {
   const meta = intent.metadata ?? {};
-  const apartmentId = parsed.apartmentId ?? ROOM_TO_APARTMENT_ID[parsed.roomId];
-  if (!apartmentId) return false;
-  if (meta.apartmentId !== String(apartmentId)) return false;
+  const beds24RoomId = parsed.beds24RoomId ?? ROOM_TO_BEDS24_ID[parsed.roomId];
+  if (!beds24RoomId) return false;
+  if (meta.beds24RoomId !== String(beds24RoomId)) return false;
   if (meta.checkIn !== parsed.checkIn || meta.checkOut !== parsed.checkOut) return false;
   if (meta.guestEmail && meta.guestEmail.toLowerCase() !== parsed.email.toLowerCase()) {
     return false;
@@ -42,6 +42,10 @@ function intentMatchesBooking(intent: Stripe.PaymentIntent, parsed: BookingInput
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  if (!BEDS24_PROPERTY_ID) {
+    return NextResponse.json({ error: "booking_not_configured" }, { status: 503 });
+  }
+
   let parsed: BookingInput;
   try {
     const body: unknown = await req.json();
@@ -54,14 +58,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const apartmentId = parsed.apartmentId ?? ROOM_TO_APARTMENT_ID[parsed.roomId];
-  if (!apartmentId) {
+  const beds24RoomId = parsed.beds24RoomId ?? ROOM_TO_BEDS24_ID[parsed.roomId];
+  if (!beds24RoomId) {
     return NextResponse.json({ error: "Unknown room" }, { status: 400 });
   }
 
-  // Stripe authorization must already be in place. We check status, match the
-  // intent's metadata against the submitted booking (anti-tamper), then capture
-  // only after Smoobu accepts the reservation.
   let intent: Stripe.PaymentIntent;
   try {
     intent = await retrievePaymentIntent(parsed.paymentIntentId);
@@ -82,47 +83,53 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Payment / booking mismatch" }, { status: 400 });
   }
 
-  // totalPrice (full stay) is sent by the client and used for Smoobu reservation.
-  // The Stripe intent only holds the deposit; the metadata stores the full price.
   const totalThb =
     parsed.totalPrice ?? Number(intent.metadata?.fullPriceThb ?? Math.round(intent.amount / 100));
   const depositThb = Math.round(intent.amount / 100);
   const balanceThb = Math.max(0, totalThb - depositThb);
   const localId = parsed.bookingId ?? null;
 
-  let smoobuReservationId: number | undefined;
+  let beds24BookingId: number | undefined;
+  let token: string;
+  try {
+    token = await getAccessToken();
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : String(err);
+    console.error("Beds24 token error:", detail);
+    return NextResponse.json({ error: "Reservation system unavailable" }, { status: 502 });
+  }
+
   try {
     const { firstName, lastName } = splitName(parsed.name);
-    const reservation = await createReservation({
-      apartmentId,
-      channelId: SMOOBU_CHANNEL_ID_DIRECT_WEBSITE,
-      arrivalDate: parsed.checkIn,
-      departureDate: parsed.checkOut,
+    const reservation = await createBooking(token, {
+      propertyId: BEDS24_PROPERTY_ID,
+      roomId: beds24RoomId,
+      arrival: parsed.checkIn,
+      departure: parsed.checkOut,
+      numAdult: parsed.adults,
+      numChild: parsed.children,
       firstName,
       lastName,
       email: parsed.email,
       phone: parsed.phone,
-      adults: parsed.adults,
-      children: parsed.children,
       price: totalThb,
-      language: parsed.locale,
-      notice: parsed.notes,
+      message: parsed.notes,
+      apiSourceId: BEDS24_SOURCE_ID_DIRECT,
     });
-    smoobuReservationId = reservation.id;
+    beds24BookingId = reservation.id;
   } catch (err) {
-    // Smoobu rejected: release the Stripe authorization and surface 502.
     try {
       await cancelPaymentIntent(parsed.paymentIntentId, "abandoned");
     } catch (cancelErr) {
       console.error(
-        "Stripe cancel after Smoobu failure also failed:",
+        "Stripe cancel after Beds24 failure also failed:",
         cancelErr instanceof Error ? cancelErr.message : cancelErr
       );
     }
     if (localId !== null) {
       await updateBooking(localId, { status: "failed", paymentStatus: "failed" });
     }
-    if (err instanceof SmoobuError) {
+    if (err instanceof Beds24Error) {
       return NextResponse.json(
         { error: "Reservation could not be created", status: err.status },
         { status: 502 }
@@ -131,40 +138,36 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 
-  // Smoobu accepted — capture the held funds.
   let captured: Stripe.PaymentIntent | null = null;
   try {
     captured = await capturePaymentIntent(parsed.paymentIntentId);
   } catch (err) {
     const detail = err instanceof Error ? err.message : String(err);
-    // Reservation exists in Smoobu but Stripe capture failed. Don't roll back
-    // Smoobu — flag for manual review and let the webhook reconcile.
-    console.error("Stripe capture failed after Smoobu reservation:", detail);
+    console.error("Stripe capture failed after Beds24 reservation:", detail);
     if (localId !== null) {
       await updateBooking(localId, {
         status: "confirmed",
         paymentStatus: "authorized",
-        smoobuReservationId,
+        beds24BookingId,
       });
     }
     return NextResponse.json(
       {
         error: "Payment hold could not be captured — booking saved, our team will follow up",
-        reservationId: smoobuReservationId,
+        reservationId: beds24BookingId,
         bookingId: localId,
       },
       { status: 202 }
     );
   }
 
-  // captured.amount is in satang — store THB in D1 for consistency with totalPrice.
   const capturedThb = Math.round((captured.amount_received ?? captured.amount) / 100);
 
   if (localId !== null) {
     await updateBooking(localId, {
       status: "confirmed",
       paymentStatus: "paid",
-      smoobuReservationId,
+      beds24BookingId,
       amountPaid: capturedThb,
     });
   }
@@ -191,7 +194,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         totalPrice: totalThb,
         depositPaid: capturedThb,
         balanceDue: balanceThb,
-        reservationId: smoobuReservationId,
+        reservationId: beds24BookingId,
       })
     ),
     sendBookingConfirmation({
@@ -204,7 +207,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       totalPrice: totalThb,
       depositPaid: capturedThb,
       balanceDue: balanceThb,
-      reservationId: smoobuReservationId,
+      reservationId: beds24BookingId,
       locale: parsed.locale,
     }),
   ]);
@@ -225,7 +228,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   return NextResponse.json({
     ok: true,
-    reservationId: smoobuReservationId,
+    reservationId: beds24BookingId,
     bookingId: localId,
     paymentStatus: "paid",
     depositPaid: capturedThb,

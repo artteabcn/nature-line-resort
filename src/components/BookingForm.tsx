@@ -20,10 +20,9 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { cn } from "@/lib/utils";
-import { APARTMENT_TO_ROOM_ID } from "@/config/smoobu";
 
 interface AvailableRoom {
-  apartmentId: number;
+  beds24RoomId: number;
   roomId: string | null;
   totalPrice: number | null;
   currency: string;
@@ -113,7 +112,7 @@ export default function BookingForm(): React.JSX.Element {
   const [payment, setPayment] = useState<PaymentSession | null>(null);
   const [reservationId, setReservationId] = useState<number | null>(null);
   const [errorDetail, setErrorDetail] = useState<string | null>(null);
-  // Minimum nights Smoobu requires for the searched arrival date — returned by
+  // Minimum nights required for the searched arrival date — returned by
   // /api/availability, used to explain an empty result set ("minimum N nights").
   const [minStay, setMinStay] = useState(1);
 
@@ -137,7 +136,7 @@ export default function BookingForm(): React.JSX.Element {
   });
 
   // Nights in the current search, used to tell an empty result set caused by
-  // Smoobu's minimum-stay rule apart from genuine no-availability.
+  // a minimum-stay rule apart from genuine no-availability.
   const searchedNights = useMemo(() => {
     if (!criteria) return 0;
     const ms =
@@ -146,15 +145,15 @@ export default function BookingForm(): React.JSX.Element {
     return Math.round(ms / 86_400_000);
   }, [criteria]);
 
-  // Several physical apartments share a room category (e.g. 3× Cosy). Show one
-  // card per category — the cheapest available unit represents it — so the
-  // guest picks a room type, not a near-identical duplicate. A concrete
-  // apartmentId is still carried through for the reservation.
+  // Several room types may share a display category. Show one card per category —
+  // the cheapest available unit represents it — so the guest picks a room type,
+  // not a near-identical duplicate. A concrete beds24RoomId is still carried
+  // through for the reservation.
   const displayRooms = useMemo(() => {
     const order = roomItems.map((r) => r.id);
     const byCategory = new Map<string, AvailableRoom>();
     for (const room of available) {
-      const key = room.roomId ?? String(room.apartmentId);
+      const key = room.roomId ?? String(room.beds24RoomId);
       const current = byCategory.get(key);
       if (!current || (room.totalPrice ?? Infinity) < (current.totalPrice ?? Infinity)) {
         byCategory.set(key, room);
@@ -182,7 +181,13 @@ export default function BookingForm(): React.JSX.Element {
         available: AvailableRoom[];
         nights: number;
         minStayRequired?: number;
+        notConfigured?: boolean;
       };
+      if (json.notConfigured) {
+        setErrorDetail("Online booking is not yet available for this property — please contact us to reserve.");
+        setStep("error");
+        return;
+      }
       setCriteria(data);
       setAvailable(json.available);
       setMinStay(json.minStayRequired ?? 1);
@@ -196,14 +201,14 @@ export default function BookingForm(): React.JSX.Element {
   async function onGuestSubmit(data: GuestInput): Promise<void> {
     if (!criteria || !selected) return;
     try {
-      const roomId = selected.roomId ?? APARTMENT_TO_ROOM_ID[selected.apartmentId] ?? "cosy";
+      const roomId = selected.roomId ?? "cosy";
       const res = await fetch("/api/payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...data,
           roomId,
-          apartmentId: selected.apartmentId,
+          beds24RoomId: selected.beds24RoomId,
           checkIn: criteria.checkIn,
           checkOut: criteria.checkOut,
           adults: criteria.adults,
@@ -225,14 +230,14 @@ export default function BookingForm(): React.JSX.Element {
   async function onPaymentAuthorized(): Promise<void> {
     if (!criteria || !selected || !guestData || !payment) return;
     try {
-      const roomId = selected.roomId ?? APARTMENT_TO_ROOM_ID[selected.apartmentId] ?? "cosy";
+      const roomId = selected.roomId ?? "cosy";
       const res = await fetch("/api/booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...guestData,
           roomId,
-          apartmentId: selected.apartmentId,
+          beds24RoomId: selected.beds24RoomId,
           checkIn: criteria.checkIn,
           checkOut: criteria.checkOut,
           adults: criteria.adults,
@@ -282,8 +287,9 @@ export default function BookingForm(): React.JSX.Element {
     return (
       <div className="rounded-2xl bg-white p-10 text-center shadow-sm ring-1 ring-black/5">
         <h3 className="text-brand-pink font-serif text-3xl font-semibold">{t("errorTitle")}</h3>
-        <p className="text-brand-ink-soft mx-auto mt-3 max-w-md text-sm">{t("errorDetail")}</p>
-        {errorDetail && <p className="mt-2 text-xs text-gray-400">({errorDetail})</p>}
+        <p className="text-brand-ink-soft mx-auto mt-3 max-w-md text-sm">
+          {errorDetail ?? t("errorDetail")}
+        </p>
         <button
           type="button"
           onClick={() => {
@@ -394,10 +400,10 @@ export default function BookingForm(): React.JSX.Element {
             <div className="mt-6 grid gap-6">
               {displayRooms.map((room, idx) => {
                 const copy = room.roomId ? roomCopyById[room.roomId] : undefined;
-                const label = copy?.name ?? `Apartment ${room.apartmentId}`;
+                const label = copy?.name ?? `Room ${room.beds24RoomId}`;
                 return (
                   <div
-                    key={room.apartmentId}
+                    key={room.beds24RoomId}
                     className="bg-brand-cream grid overflow-hidden rounded-2xl ring-1 ring-black/5 md:grid-cols-[280px_1fr]"
                   >
                     <div className="relative aspect-[4/3] md:aspect-auto md:h-full">
@@ -502,7 +508,7 @@ export default function BookingForm(): React.JSX.Element {
             <p className="section-label">{t("summary")}</p>
             <p className="text-brand-ink mt-2 font-serif text-lg">
               {(selected.roomId && roomCopyById[selected.roomId]?.name) ??
-                `Apartment ${selected.apartmentId}`}
+                `Room ${selected.beds24RoomId}`}
             </p>
             <p className="text-brand-ink-soft mt-1 text-sm">
               {criteria.checkIn} → {criteria.checkOut} · {criteria.adults + criteria.children}{" "}
@@ -585,7 +591,7 @@ export default function BookingForm(): React.JSX.Element {
           summary={{
             roomLabel:
               (selected.roomId && roomCopyById[selected.roomId]?.name) ??
-              `Apartment ${selected.apartmentId}`,
+              `Room ${selected.beds24RoomId}`,
             checkIn: criteria.checkIn,
             checkOut: criteria.checkOut,
             guests: criteria.adults + criteria.children,
@@ -685,10 +691,10 @@ function PaymentStep({
             appearance: {
               theme: "flat",
               variables: {
-                colorPrimary: "#1a6b8a",
-                colorText: "#c9a840",
+                colorPrimary: "#b5532a",
+                colorText: "#5a7c55",
                 colorBackground: "#ffffff",
-                fontFamily: "DM Sans, system-ui, sans-serif",
+                fontFamily: "Raleway, system-ui, sans-serif",
                 borderRadius: "12px",
                 spacingUnit: "4px",
               },
@@ -745,7 +751,7 @@ function PaymentInner({
     }
     // With manual capture, a successful authorization lands in
     // `requires_capture` (not `succeeded`) — capture happens server-side
-    // after Smoobu confirms the reservation.
+    // after Beds24 confirms the reservation.
     if (paymentIntent && paymentIntent.status !== "requires_capture") {
       setErrorMsg(t("payError"));
       setSubmitting(false);
