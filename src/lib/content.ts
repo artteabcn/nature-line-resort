@@ -13,7 +13,7 @@
 //   - deleteImage(slot)
 
 import { and, eq } from "drizzle-orm";
-import { contentOverrides, contentImages } from "@/db/schema";
+import { contentOverrides, contentImages, siteConfig } from "@/db/schema";
 import { getDbOrNull } from "@/lib/db/get-db";
 import type { ContentImage, ContentOverride } from "@/db/schema";
 
@@ -25,20 +25,10 @@ export interface ImageInfo {
   height: number | null;
 }
 
-// MEDIA_PUBLIC_URL is the public hostname/prefix for the R2 bucket — e.g.
-// "https://pub-abc123.r2.dev" or "https://media.nature-line-resortkhanom.com".
-// Set in Cloudflare Pages env vars (production).
-function mediaPublicUrl(): string {
-  const url = process.env.MEDIA_PUBLIC_URL;
-  if (!url) return "";
-  return url.endsWith("/") ? url.slice(0, -1) : url;
-}
-
 function imageInfoFromRow(row: ContentImage): ImageInfo {
-  const base = mediaPublicUrl();
   return {
     slot: row.slot,
-    url: base ? `${base}/${row.r2Key}` : `/${row.r2Key}`,
+    url: `/api/media/${row.r2Key}`,
     alt: row.alt,
     width: row.width,
     height: row.height,
@@ -232,6 +222,77 @@ export async function deleteImage(slot: string): Promise<string | null> {
   if (existing.length === 0) return null;
   await db.delete(contentImages).where(eq(contentImages.slot, slot));
   return existing[0].r2Key;
+}
+
+// Non-locale site config (social links, map embed, Place ID).
+// Stored in the `site_config` D1 table, editable from /content/site.
+export interface SiteConfig {
+  facebookUrl: string;
+  instagramUrl: string;
+  mapEmbedUrl: string;
+  googlePlaceId: string;
+  minStay: number;
+  cutoffHour: number;
+}
+
+const SITE_CONFIG_EMPTY: SiteConfig = {
+  facebookUrl: "",
+  instagramUrl: "",
+  mapEmbedUrl: "",
+  googlePlaceId: "",
+  minStay: 1,
+  cutoffHour: 18,
+};
+
+export async function getSiteConfig(): Promise<SiteConfig> {
+  const db = await getDbOrNull();
+  if (!db) return SITE_CONFIG_EMPTY;
+  try {
+    const rows = await db.select().from(siteConfig).all();
+    const map = Object.fromEntries(rows.map((r) => [r.key, r.value]));
+    return {
+      facebookUrl: map["facebookUrl"] ?? "",
+      instagramUrl: map["instagramUrl"] ?? "",
+      mapEmbedUrl: map["mapEmbedUrl"] ?? "",
+      googlePlaceId: map["googlePlaceId"] ?? "",
+      minStay: parseInt(map["min_stay"] ?? "1", 10) || 1,
+      cutoffHour: parseInt(map["cutoff_hour"] ?? "18", 10) || 18,
+    };
+  } catch {
+    // Table doesn't exist yet (migration pending) — return empty defaults.
+    return SITE_CONFIG_EMPTY;
+  }
+}
+
+export async function setSiteConfig(
+  key: string,
+  value: string,
+  updatedBy: string | null
+): Promise<void> {
+  const db = await getDbOrNull();
+  if (!db) throw new Error("D1 not available");
+  if (value.length === 0) {
+    await db.delete(siteConfig).where(eq(siteConfig.key, key));
+  } else {
+    await db
+      .insert(siteConfig)
+      .values({ key, value, updatedBy, updatedAt: new Date().toISOString() })
+      .onConflictDoUpdate({
+        target: siteConfig.key,
+        set: { value, updatedBy, updatedAt: new Date().toISOString() },
+      });
+  }
+}
+
+export async function getAllSiteConfig(): Promise<Array<{ key: string; value: string }>> {
+  const db = await getDbOrNull();
+  if (!db) return [];
+  try {
+    const rows = await db.select().from(siteConfig).all();
+    return rows.map((r) => ({ key: r.key, value: r.value }));
+  } catch {
+    return [];
+  }
 }
 
 // Image slots the site renders. The admin UI iterates this list so new

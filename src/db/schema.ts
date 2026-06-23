@@ -123,6 +123,18 @@ export type NewContentImage = typeof contentImages.$inferInsert;
 export type PaidService = typeof paidServices.$inferSelect;
 export type NewPaidService = typeof paidServices.$inferInsert;
 
+// Global (non-locale) site configuration — social links, map embed URL, Place ID.
+// Editable from /content/site without a redeploy.
+export const siteConfig = sqliteTable("site_config", {
+  key: text("key").notNull().primaryKey(),
+  value: text("value").notNull(),
+  updatedAt: text("updated_at")
+    .notNull()
+    .default(sql`(datetime('now'))`),
+  updatedBy: text("updated_by"),
+});
+export type SiteConfigRow = typeof siteConfig.$inferSelect;
+
 export const blockedDates = sqliteTable("blocked_dates", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   roomId: text("room_id").notNull(),
