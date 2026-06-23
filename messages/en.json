@@ -82,7 +82,13 @@
         "beds": "1 King + 1 Single Bed",
         "view": "Garden & Pool View"
       }
-    ]
+    ],
+    "balcony": {
+      "name": "Balcony Room"
+    },
+    "simple": {
+      "name": "Simple Room"
+    }
   },
   "amenities": {
     "label": "Facilities",
@@ -220,7 +226,8 @@
     "successTitle": "Booking confirmed",
     "successDetail": "We've sent a confirmation to your email. Reservation #{id}.",
     "errorTitle": "Something went wrong",
-    "errorDetail": "Please try again or contact us via WhatsApp."
+    "errorDetail": "Please try again or contact us via WhatsApp.",
+    "roomLabel": "Room"
   },
   "emails": {
     "bookingConfirmation": {

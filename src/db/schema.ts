@@ -35,6 +35,8 @@ export const bookings = sqliteTable("bookings", {
   updatedAt: text("updated_at")
     .notNull()
     .default(sql`(datetime('now'))`),
+  arkadyaFeeThb: integer("arkadya_fee_thb").notNull().default(0),
+  ownerPayoutThb: integer("owner_payout_thb").notNull().default(0),
 });
 
 // CMS content overrides — text snippets keyed by (locale, path).
@@ -120,3 +122,14 @@ export type ContentImage = typeof contentImages.$inferSelect;
 export type NewContentImage = typeof contentImages.$inferInsert;
 export type PaidService = typeof paidServices.$inferSelect;
 export type NewPaidService = typeof paidServices.$inferInsert;
+
+export const blockedDates = sqliteTable("blocked_dates", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  roomId: text("room_id").notNull(),
+  date: text("date").notNull(),
+  reason: text("reason"),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`(datetime('now'))`),
+});
+export type BlockedDateRow = typeof blockedDates.$inferSelect;

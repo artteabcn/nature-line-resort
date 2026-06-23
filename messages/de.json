@@ -82,7 +82,13 @@
         "beds": "1 Kingsize-Bett + 1 Einzelbett",
         "view": "Garten- & Poolblick"
       }
-    ]
+    ],
+    "balcony": {
+      "name": "Balcony Room"
+    },
+    "simple": {
+      "name": "Simple Room"
+    }
   },
   "amenities": {
     "label": "Ausstattung",
@@ -220,7 +226,8 @@
     "successTitle": "Buchung bestätigt",
     "successDetail": "Eine Bestätigung wurde an Ihre E-Mail gesendet. Reservierung Nr. {id}.",
     "errorTitle": "Etwas ist schiefgelaufen",
-    "errorDetail": "Bitte versuchen Sie es erneut oder kontaktieren Sie uns per WhatsApp."
+    "errorDetail": "Bitte versuchen Sie es erneut oder kontaktieren Sie uns per WhatsApp.",
+    "roomLabel": "Room"
   },
   "emails": {
     "bookingConfirmation": {

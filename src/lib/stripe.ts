@@ -44,7 +44,7 @@ export async function createPaymentIntent(input: CreateIntentInput): Promise<Str
   return stripe.paymentIntents.create({
     amount: input.amount,
     currency: input.currency,
-    capture_method: "manual",
+    capture_method: "automatic",
     automatic_payment_methods: { enabled: true },
     receipt_email: input.receiptEmail,
     description: input.description,

@@ -82,7 +82,13 @@
         "beds": "1 lit king + 1 lit simple",
         "view": "Vue jardin & piscine"
       }
-    ]
+    ],
+    "balcony": {
+      "name": "Balcony Room"
+    },
+    "simple": {
+      "name": "Simple Room"
+    }
   },
   "amenities": {
     "label": "Équipements",
@@ -220,7 +226,8 @@
     "successTitle": "Réservation confirmée",
     "successDetail": "Une confirmation a été envoyée par e-mail. Réservation n°{id}.",
     "errorTitle": "Une erreur s'est produite",
-    "errorDetail": "Veuillez réessayer ou nous contacter via WhatsApp."
+    "errorDetail": "Veuillez réessayer ou nous contacter via WhatsApp.",
+    "roomLabel": "Room"
   },
   "emails": {
     "bookingConfirmation": {

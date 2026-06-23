@@ -82,7 +82,13 @@
         "beds": "เตียงคิงไซส์ 1 + เตียงเดี่ยว 1",
         "view": "วิวสวนและสระว่ายน้ำ"
       }
-    ]
+    ],
+    "balcony": {
+      "name": "Balcony Room"
+    },
+    "simple": {
+      "name": "Simple Room"
+    }
   },
   "amenities": {
     "label": "สิ่งอำนวยความสะดวก",
@@ -220,7 +226,8 @@
     "successTitle": "ยืนยันการจองเรียบร้อย",
     "successDetail": "เราส่งคำยืนยันไปยังอีเมลของคุณแล้ว เลขที่จอง #{id}",
     "errorTitle": "เกิดข้อผิดพลาด",
-    "errorDetail": "กรุณาลองใหม่อีกครั้งหรือติดต่อเราทาง WhatsApp"
+    "errorDetail": "กรุณาลองใหม่อีกครั้งหรือติดต่อเราทาง WhatsApp",
+    "roomLabel": "Room"
   },
   "emails": {
     "bookingConfirmation": {

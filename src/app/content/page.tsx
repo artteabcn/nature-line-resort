@@ -1,6 +1,15 @@
 import React from "react";
 import Link from "next/link";
-import { FileText, BedDouble, ImageIcon, ExternalLink, ConciergeBell } from "lucide-react";
+import {
+  FileText,
+  BedDouble,
+  ImageIcon,
+  ExternalLink,
+  ConciergeBell,
+  Settings2,
+  CalendarDays,
+  ClipboardList,
+} from "lucide-react";
 
 const CARDS = [
   {
@@ -26,6 +35,24 @@ const CARDS = [
     icon: ConciergeBell,
     title: "Services",
     description: "Paid extras — laundry, airport transfer, etc. Add, edit or remove prices.",
+  },
+  {
+    href: "/content/calendar",
+    icon: CalendarDays,
+    title: "Calendar",
+    description: "Block or unblock dates per room. Set minimum stay and same-day cutoff hour.",
+  },
+  {
+    href: "/content/bookings",
+    icon: ClipboardList,
+    title: "Bookings",
+    description: "View all bookings, payment status, Arkadya fee, owner payout, and move dates.",
+  },
+  {
+    href: "/content/site",
+    icon: Settings2,
+    title: "Site Settings",
+    description: "Facebook, Instagram, Google Maps pin and Place ID for reviews.",
   },
 ];
 
