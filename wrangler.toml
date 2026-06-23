@@ -6,8 +6,8 @@ pages_build_output_dir = ".open-next"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "nature-line-resort"
-database_id = "PLACEHOLDER_DB_ID"
+database_name = "naturelineresort"
+database_id = "5a260d5c-e23e-4b38-953d-7c346bd8e0ed"
 migrations_dir = "drizzle"
 
 # CMS media bucket — created once via:
