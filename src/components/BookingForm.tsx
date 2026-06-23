@@ -527,13 +527,21 @@ function PaymentInner({
   const elements = useElements();
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
 
   async function handleCardPay(e: React.FormEvent): Promise<void> {
     e.preventDefault();
-    if (!stripe || !elements) return;
+    if (!stripe || !elements || !ready) return;
     setSubmitting(true);
     setErrorMsg(null);
     try {
+      // Required when clientSecret is set on the Elements provider
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        setErrorMsg(submitError.message ?? t("payError"));
+        setSubmitting(false);
+        return;
+      }
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         redirect: "if_required",
@@ -558,17 +566,17 @@ function PaymentInner({
 
   return (
     <form onSubmit={handleCardPay}>
-      <PaymentElement />
+      <PaymentElement onReady={() => setReady(true)} />
       {errorMsg && <p className="mt-3 text-sm text-red-600">{errorMsg}</p>}
       <button
         type="submit"
-        disabled={!stripe || !elements || submitting || !acknowledged}
+        disabled={!stripe || !elements || submitting || !acknowledged || !ready}
         className="btn-pill-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
-        {submitting ? (
+        {submitting || !ready ? (
           <>
             <Loader2 className="mr-2 size-4 animate-spin" />
-            {t("payProcessing")}
+            {submitting ? t("payProcessing") : t("payNow", { amount: amount.toLocaleString() })}
           </>
         ) : (
           t("payNow", { amount: amount.toLocaleString() })
