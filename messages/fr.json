@@ -1,15 +1,15 @@
 {
   "seo": {
     "home": {
-      "title": "Nature Line Resort — Bed & Breakfast de charme à Khanom, Khanom",
-      "description": "B&B familial de charme à Khanom, Khanom. Piscine, petit-déjeuner, à deux pas de la plage. Anglais, français, allemand et thaï parlés. Réservez en direct au meilleur prix."
+      "title": "Nature Line Resort — Bed & Breakfast de charme à Khanom",
+      "description": "B&B familial de charme à Khanom, Nakhon Si Thammarat. Piscine, petit-déjeuner et jardin paisible. Anglais, français, allemand et thaï parlés. Réservez en direct au meilleur prix."
     },
     "book": {
       "title": "Réserver votre séjour — Nature Line Resort",
-      "description": "Réservez votre chambre en direct au Nature Line Resort Khanom, Khanom. Disponibilités en temps réel, sans frais de réservation, confirmation immédiate."
+      "description": "Réservez votre chambre en direct au Nature Line Resort à Khanom. Disponibilités en temps réel, sans frais de réservation, confirmation immédiate."
     },
-    "ogAlt": "Nature Line Resort Bed & Breakfast — Khanom, Khanom",
-    "keywords": "B&B Koh Samui, chambre d'hôte Khanom, maison d'hôtes Koh Samui, Nature Line Resort Samui, où dormir à Khanom"
+    "ogAlt": "Nature Line Resort Bed & Breakfast — Khanom",
+    "keywords": "B&B Khanom, chambre d'hôte Khanom, maison d'hôtes Khanom, Nature Line Resort Khanom, où dormir à Khanom"
   },
   "nav": {
     "about": "À propos",
@@ -20,17 +20,17 @@
     "bookNow": "Réserver"
   },
   "hero": {
-    "tagline": "Votre maison à Koh Samui",
+    "tagline": "Votre maison à Khanom",
     "headline": "Nature Line Resort",
-    "subheadline": "Une chambre d'hôtes chaleureuse et accueillante au cœur de Koh Samui, Thaïlande.",
+    "subheadline": "Une chambre d'hôtes chaleureuse et accueillante au cœur de Khanom, Thaïlande.",
     "cta": "Réserver votre séjour",
     "discover": "Découvrir"
   },
   "about": {
     "label": "Notre histoire",
     "title": "Un chez-soi loin de chez soi",
-    "p1": "Nature Line Resort est une charmante chambre d'hôtes sur la magnifique île de Koh Samui, en Thaïlande. Nous proposons des chambres confortables, une atmosphère chaleureuse et un service personnalisé en anglais, français, allemand et thaï.",
-    "p2": "Que vous soyez là pour une courte escapade ou un long séjour, notre équipe est dédiée à rendre chaque moment de votre visite inoubliable. Réveillez-vous avec un petit-déjeuner frais, plongez dans la piscine et laissez la magie de l'île faire le reste.",
+    "p1": "Nature Line Resort est une charmante chambre d'hôtes à Khanom, dans la province de Nakhon Si Thammarat, en Thaïlande. Nous proposons des chambres confortables, une atmosphère chaleureuse et un service personnalisé en anglais, français, allemand et thaï.",
+    "p2": "Que vous soyez là pour une courte escapade ou un long séjour, notre équipe est dédiée à rendre chaque moment de votre visite inoubliable. Réveillez-vous avec un petit-déjeuner frais, plongez dans la piscine et profitez du rythme paisible de Khanom.",
     "stat1Value": "10+",
     "stat1Label": "Années d'accueil",
     "stat2Value": "4",
@@ -118,8 +118,8 @@
       },
       {
         "icon": "whatsapp",
-        "title": "Support WhatsApp",
-        "desc": "Contactez-nous à tout moment via WhatsApp"
+        "title": "Assistance aux voyageurs",
+        "desc": "Contactez-nous avant ou pendant votre séjour pour vos demandes et conseils locaux"
       },
       {
         "icon": "transfer",
@@ -147,7 +147,7 @@
     "title": "Des souvenirs qui durent",
     "items": [
       {
-        "quote": "Séjourner au Nature Line Resort a été le point fort de notre voyage à Koh Samui. La chaleur des hôtes et le jardin magnifique nous ont tout de suite mis à l'aise.",
+        "quote": "Séjourner au Nature Line Resort a été le point fort de notre voyage à Khanom. La chaleur des hôtes et le jardin magnifique nous ont tout de suite mis à l'aise.",
         "name": "Sophie & Marc",
         "origin": "Lyon, France"
       },
@@ -166,11 +166,11 @@
   "contact": {
     "label": "Nous trouver",
     "title": "Contactez-nous",
-    "subtitle": "Nous serions ravis de vous entendre. Contactez-nous par WhatsApp, e-mail ou via le formulaire ci-dessous.",
-    "address": "123 Moo 4, Khanom, Khanom, Surat Thani 84310, Thaïlande",
-    "phone": "PLACEHOLDER_PHONE_DISPLAY",
+    "subtitle": "Nous serions ravis de vous entendre. Contactez-nous par e-mail ou via le formulaire ci-dessous.",
+    "address": "Khanom, Nakhon Si Thammarat 80210, Thaïlande",
+    "phone": "",
     "email": "hello@nature-line-resortkhanom.com",
-    "whatsapp": "Discuter sur WhatsApp",
+    "whatsapp": "Nous écrire",
     "form": {
       "name": "Votre nom",
       "email": "Adresse e-mail",
@@ -226,7 +226,7 @@
     "successTitle": "Réservation confirmée",
     "successDetail": "Une confirmation a été envoyée par e-mail. Réservation n°{id}.",
     "errorTitle": "Une erreur s'est produite",
-    "errorDetail": "Veuillez réessayer ou nous contacter via WhatsApp.",
+    "errorDetail": "Veuillez réessayer ou nous contacter par e-mail.",
     "roomLabel": "Room"
   },
   "emails": {
@@ -248,10 +248,10 @@
       "balanceNote": "Votre réservation est intégralement payée — rien à régler à l'arrivée.",
       "nonRefundableNote": "Ce paiement est non remboursable. Aucun remboursement en cas d'annulation ou de non-présentation.",
       "contactTitle": "Une question ?",
-      "contactBody": "Répondez à cet e-mail ou écrivez-nous sur WhatsApp au {phone} — nous serons heureux de vous aider pour les transferts aéroport, l'heure d'arrivée ou toute autre demande avant votre séjour.",
+      "contactBody": "Répondez à cet e-mail si vous avez besoin d'aide pour les transferts, l'heure d'arrivée ou toute autre demande avant votre séjour.",
       "signOff": "À très vite,",
       "houseName": "Nature Line Resort",
-      "houseAddress": "Khanom, Khanom, Surat Thani 84310, Thaïlande"
+      "houseAddress": "Khanom, Nakhon Si Thammarat 80210, Thaïlande"
     }
   }
 }

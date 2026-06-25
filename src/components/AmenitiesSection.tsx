@@ -116,7 +116,7 @@ function ServicesModal({ onClose }: { onClose: () => void }): React.JSX.Element 
 
           {!loading && !fetchError && services?.length === 0 && (
             <p className="py-8 text-center text-sm text-gray-500">
-              No paid services configured yet. Contact us via WhatsApp for pricing.
+              No paid services configured yet. Contact us for current pricing.
             </p>
           )}
 
@@ -148,7 +148,7 @@ function ServicesModal({ onClose }: { onClose: () => void }): React.JSX.Element 
 
         <div className="border-t border-black/5 px-6 py-4">
           <p className="text-brand-ink-soft text-xs">
-            All prices in THB. Contact us via WhatsApp to arrange any service.
+            All prices in THB. Contact us to arrange any service.
           </p>
         </div>
       </div>

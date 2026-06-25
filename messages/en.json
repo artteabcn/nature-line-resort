@@ -1,15 +1,15 @@
 {
   "seo": {
     "home": {
-      "title": "Nature Line Resort — Boutique Bed & Breakfast in Khanom, Khanom",
-      "description": "Family-run boutique B&B in Khanom, Khanom. Pool, breakfast, walking distance to the beach. English, French, German & Thai spoken. Book direct for the best rate."
+      "title": "Nature Line Resort — Boutique Bed & Breakfast in Khanom",
+      "description": "Family-run boutique B&B in Khanom, Nakhon Si Thammarat. Pool, breakfast, and a relaxed garden setting. English, French, German & Thai spoken. Book direct for the best rate."
     },
     "book": {
       "title": "Book Your Stay — Nature Line Resort",
-      "description": "Reserve your room directly at Nature Line Resort Khanom, Khanom. Real-time availability, no booking fees, instant confirmation."
+      "description": "Reserve your room directly at Nature Line Resort in Khanom. Real-time availability, no booking fees, instant confirmation."
     },
-    "ogAlt": "Nature Line Resort Bed & Breakfast — Khanom, Khanom",
-    "keywords": "Koh Samui B&B, Khanom bed and breakfast, boutique guesthouse Koh Samui, Nature Line Resort Samui, where to stay in Khanom"
+    "ogAlt": "Nature Line Resort Bed & Breakfast — Khanom",
+    "keywords": "Khanom B&B, Khanom bed and breakfast, boutique guesthouse Khanom, Nature Line Resort Khanom, where to stay in Khanom"
   },
   "nav": {
     "about": "About",
@@ -20,17 +20,17 @@
     "bookNow": "Book Now"
   },
   "hero": {
-    "tagline": "Your Home in Koh Samui",
+    "tagline": "Your Home in Khanom",
     "headline": "Nature Line Resort",
-    "subheadline": "A warm, welcoming bed & breakfast nestled in the heart of Koh Samui, Thailand.",
+    "subheadline": "A warm, welcoming bed & breakfast nestled in the heart of Khanom, Thailand.",
     "cta": "Book Your Stay",
     "discover": "Discover More"
   },
   "about": {
     "label": "Our Story",
     "title": "A Home Away From Home",
-    "p1": "Nature Line Resort is a charming bed & breakfast on the beautiful island of Koh Samui, Thailand. We offer comfortable rooms, a warm atmosphere, and personalised service in English, French, German, and Thai.",
-    "p2": "Whether you are here for a short escape or an extended stay, our team is dedicated to making every moment of your visit memorable. Wake up to a fresh breakfast, take a dip in the pool, and let the island's magic do the rest.",
+    "p1": "Nature Line Resort is a charming bed & breakfast in Khanom, Nakhon Si Thammarat, Thailand. We offer comfortable rooms, a warm atmosphere, and personalised service in English, French, German, and Thai.",
+    "p2": "Whether you are here for a short escape or an extended stay, our team is dedicated to making every moment of your visit memorable. Wake up to a fresh breakfast, take a dip in the pool, and let Khanom's quiet coastal rhythm do the rest.",
     "stat1Value": "10+",
     "stat1Label": "Years welcoming guests",
     "stat2Value": "4",
@@ -118,8 +118,8 @@
       },
       {
         "icon": "whatsapp",
-        "title": "WhatsApp Support",
-        "desc": "Reach us anytime via WhatsApp for any request"
+        "title": "Guest Support",
+        "desc": "Reach out before or during your stay for local help and requests"
       },
       {
         "icon": "transfer",
@@ -147,7 +147,7 @@
     "title": "Memories Made Here",
     "items": [
       {
-        "quote": "Staying at Nature Line Resort was the highlight of our Koh Samui trip. The warmth of the hosts and the beautiful garden made us feel instantly at home.",
+        "quote": "Staying at Nature Line Resort was the highlight of our Khanom trip. The warmth of the hosts and the beautiful garden made us feel instantly at home.",
         "name": "Sophie & Marc",
         "origin": "Lyon, France"
       },
@@ -166,11 +166,11 @@
   "contact": {
     "label": "Find Us",
     "title": "Get in Touch",
-    "subtitle": "We'd love to hear from you. Reach us by WhatsApp, email, or use the form below.",
-    "address": "123 Moo 4, Khanom, Khanom, Surat Thani 84310, Thailand",
-    "phone": "PLACEHOLDER_PHONE_DISPLAY",
+    "subtitle": "We'd love to hear from you. Reach us by email or use the form below.",
+    "address": "Khanom, Nakhon Si Thammarat 80210, Thailand",
+    "phone": "",
     "email": "hello@nature-line-resortkhanom.com",
-    "whatsapp": "Chat on WhatsApp",
+    "whatsapp": "Chat with us",
     "form": {
       "name": "Your Name",
       "email": "Email Address",
@@ -226,7 +226,7 @@
     "successTitle": "Booking confirmed",
     "successDetail": "We've sent a confirmation to your email. Reservation #{id}.",
     "errorTitle": "Something went wrong",
-    "errorDetail": "Please try again or contact us via WhatsApp.",
+    "errorDetail": "Please try again or contact us by email.",
     "roomLabel": "Room"
   },
   "emails": {
@@ -248,10 +248,10 @@
       "balanceNote": "Your booking is paid in full — nothing to pay on arrival.",
       "nonRefundableNote": "This payment is non-refundable. Cancellations and no-shows are not eligible for a refund.",
       "contactTitle": "Need to reach us?",
-      "contactBody": "Reply to this email or message us on WhatsApp at {phone} — we're happy to help with airport transfers, arrival times, or anything else before your stay.",
+      "contactBody": "Reply to this email if you need help with transfers, arrival times, or anything else before your stay.",
       "signOff": "See you soon,",
       "houseName": "Nature Line Resort",
-      "houseAddress": "Khanom, Khanom, Surat Thani 84310, Thailand"
+      "houseAddress": "Khanom, Nakhon Si Thammarat 80210, Thailand"
     }
   }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import AboutCarousel from "./AboutCarousel";
+import AboutGalleryMosaic from "./AboutGalleryMosaic";
 
 export default function AboutSection(): React.JSX.Element {
   const t = useTranslations("about");
@@ -15,7 +15,7 @@ export default function AboutSection(): React.JSX.Element {
     <section id="about" className="bg-brand-cream py-20">
       <div className="mx-auto max-w-7xl px-8">
         <div className="grid gap-20 lg:grid-cols-2 lg:items-center">
-          <AboutCarousel />
+          <AboutGalleryMosaic />
 
           <div>
             <p className="section-label">{t("label")}</p>

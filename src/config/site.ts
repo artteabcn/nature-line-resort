@@ -1,6 +1,6 @@
 import { SOCIAL_LINKS } from "@/components/SocialIcons";
 
-export const SITE_URL = "https://nature-line-resortkhanom.com";
+export const SITE_URL = "https://nature-line-resort.pages.dev";
 
 export const SITE = {
   name: "Nature Line Resort",
@@ -10,9 +10,9 @@ export const SITE = {
   locales: ["en", "fr", "de", "th"] as const,
   email: "hello@nature-line-resortkhanom.com",
   phone: {
-    e164: "PLACEHOLDER_PHONE_E164",
-    display: "PLACEHOLDER_PHONE_DISPLAY",
-    waMe: "PLACEHOLDER_PHONE_WA",
+    e164: "",
+    display: "",
+    waMe: "",
   },
   ogImage: "/images/main.jpeg",
   address: {

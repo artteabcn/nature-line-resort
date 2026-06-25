@@ -105,7 +105,11 @@ function parseMaybeJson(value: string): unknown {
 export async function listOverrides(locale: string): Promise<ContentOverride[]> {
   const db = await getDbOrNull();
   if (!db) return [];
-  return db.select().from(contentOverrides).where(eq(contentOverrides.locale, locale)).all();
+  try {
+    return await db.select().from(contentOverrides).where(eq(contentOverrides.locale, locale)).all();
+  } catch {
+    return [];
+  }
 }
 
 export async function getOverridesMap(

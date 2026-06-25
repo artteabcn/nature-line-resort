@@ -72,7 +72,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       amount: amountSatang,
       currency: "thb",
       receiptEmail: parsed.guestEmail,
-      description: `Benjyland Beach Guesthouse — ${room.id} — ${parsed.checkIn} to ${parsed.checkOut}`,
+      description: `Nature Line Resort - ${room.id} - ${parsed.checkIn} to ${parsed.checkOut}`,
       metadata: {
         clone_id: "nature-line-resort",
         roomId: parsed.roomId,

@@ -66,7 +66,7 @@ function LodgingJsonLd({ locale }: { locale: string }): React.JSX.Element {
     ],
     logo: `${SITE_URL}/logo.png`,
     email: SITE.email,
-    telephone: SITE.phone.e164,
+    ...(SITE.phone.e164 ? { telephone: SITE.phone.e164 } : {}),
     priceRange: SITE.priceRange,
     currenciesAccepted: "THB",
     address: {

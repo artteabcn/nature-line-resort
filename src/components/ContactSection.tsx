@@ -42,9 +42,12 @@ export default function ContactSection(): React.JSX.Element {
 
   const contactItems = [
     { icon: MapPin, label: t("address") },
-    { icon: Phone, label: t("phone"), href: `tel:${t("phone").replace(/\s/g, "")}` },
+    ...(SITE.phone.display
+      ? [{ icon: Phone, label: SITE.phone.display, href: `tel:${SITE.phone.e164}` }]
+      : []),
     { icon: Mail, label: t("email"), href: `mailto:${t("email")}` },
   ];
+  const hasWhatsApp = SITE.phone.waMe.length > 0;
 
   return (
     <section id="contact" className="bg-brand-cream py-20">
@@ -74,15 +77,17 @@ export default function ContactSection(): React.JSX.Element {
             ))}
 
             <div className="flex flex-wrap items-center gap-3">
-              <a
-                href={`https://wa.me/${SITE.phone.waMe}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-              >
-                <MessageCircle className="size-5" />
-                {t("whatsapp")}
-              </a>
+              {hasWhatsApp && (
+                <a
+                  href={`https://wa.me/${SITE.phone.waMe}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                >
+                  <MessageCircle className="size-5" />
+                  {t("whatsapp")}
+                </a>
+              )}
               <a
                 href={SOCIAL_LINKS.facebook}
                 target="_blank"

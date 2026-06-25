@@ -2,7 +2,9 @@
 import { MessageCircle } from "lucide-react";
 import { SITE } from "@/config/site";
 
-export default function WhatsAppButton(): React.JSX.Element {
+export default function WhatsAppButton(): React.JSX.Element | null {
+  if (!SITE.phone.waMe) return null;
+
   return (
     <a
       href={`https://wa.me/${SITE.phone.waMe}`}
