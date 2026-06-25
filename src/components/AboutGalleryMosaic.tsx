@@ -29,7 +29,7 @@ const MOSAIC_IMAGES: MosaicImage[] = [
     slot: "gallery.2",
     fallback: "/images/main3.jpeg",
     alt: "Nature Line Resort garden exterior",
-    className: "col-span-1 row-span-1",
+    className: "col-span-1 row-span-2",
   },
   {
     slot: "gallery.3",
@@ -54,10 +54,7 @@ export default async function AboutGalleryMosaic(): Promise<React.JSX.Element> {
   );
 
   return (
-    <div
-      className="mx-auto grid aspect-[4/3] w-full max-w-lg grid-cols-3 grid-rows-2 gap-3 lg:max-w-none"
-      aria-label="Nature Line Resort gallery preview"
-    >
+    <div className="mx-auto grid aspect-[4/3] w-full max-w-lg grid-cols-3 grid-rows-3 gap-3 lg:max-w-none">
       {images.map(({ slot, src, alt, className, priority }) => (
         <div
           key={slot}

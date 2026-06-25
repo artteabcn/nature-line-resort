@@ -22,6 +22,7 @@ bucket_name = "naturelineresort-media"
 # Comma-separated — owner-email.ts splits on "," to notify all recipients
 OWNER_EMAIL = "hello@nature-line-resortkhanom.com"
 OWNER_FROM_EMAIL = "hello@nature-line-resortkhanom.com"
-
+GOOGLE_PLACE_ID = "ChIJE6Dborx9VDARXuKCWsE8eS0"
+GOOGLE_PLACES_API_KEY = "AIzaSyD5ozSU7xX2evdLHdqhdO-vlptmU9et4I0"
 [dev]
 port = 8788
