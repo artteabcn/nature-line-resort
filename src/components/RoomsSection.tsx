@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getTranslations, getLocale } from "next-intl/server";
 import { BedDouble, Users, Eye } from "lucide-react";
 import { getImageUrl } from "@/lib/content";
+import Reveal from "./Reveal";
 
 interface RoomItem {
   id: string;
@@ -29,16 +30,17 @@ export default async function RoomsSection(): Promise<React.JSX.Element> {
   return (
     <section id="rooms" className="bg-white py-20">
       <div className="mx-auto max-w-7xl px-8">
-        <div className="text-center">
+        <Reveal className="text-center">
           <p className="section-label">{t("label")}</p>
           <h2 className="section-title mt-3">{t("title")}</h2>
           <p className="section-subtitle mx-auto">{t("subtitle")}</p>
-        </div>
+        </Reveal>
 
         <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {rooms.map((room, idx) => (
-            <article
+            <Reveal
               key={room.id}
+              delayMs={idx * 100}
               className="bg-brand-cream flex flex-col overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               <div className="relative aspect-[4/3]">
@@ -91,7 +93,7 @@ export default async function RoomsSection(): Promise<React.JSX.Element> {
                   </a>
                 </div>
               </div>
-            </article>
+            </Reveal>
           ))}
         </div>
       </div>

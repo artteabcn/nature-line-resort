@@ -2,6 +2,7 @@ import React from "react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/content";
+import Reveal from "./Reveal";
 
 interface GalleryImage {
   slot: string;
@@ -40,15 +41,16 @@ export default async function GalleryGrid(): Promise<React.JSX.Element> {
   return (
     <section id="gallery" className="bg-white py-20">
       <div className="mx-auto max-w-7xl px-8">
-        <div className="text-center">
+        <Reveal className="text-center">
           <p className="section-label">{t("label")}</p>
           <h2 className="section-title mt-3">{t("title")}</h2>
-        </div>
+        </Reveal>
 
         <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {resolved.map(({ src, alt, span, slot }) => (
-            <div
+          {resolved.map(({ src, alt, span, slot }, idx) => (
+            <Reveal
               key={slot}
+              delayMs={idx * 90}
               className={`relative aspect-[16/10] overflow-hidden rounded-2xl ring-1 ring-black/5 ${span ?? ""}`}
             >
               <Image
@@ -59,7 +61,7 @@ export default async function GalleryGrid(): Promise<React.JSX.Element> {
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 unoptimized
               />
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

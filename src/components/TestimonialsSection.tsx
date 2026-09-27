@@ -4,6 +4,7 @@ import { getGoogleReviews } from "@/lib/google-reviews";
 import type { GoogleReview } from "@/lib/google-reviews";
 import ReviewsCarousel from "./ReviewsCarousel";
 import type { ReviewItem } from "./ReviewsCarousel";
+import Reveal from "./Reveal";
 
 interface TestimonialItem {
   quote: string;
@@ -83,7 +84,7 @@ export default async function TestimonialsSection(): Promise<React.JSX.Element> 
   return (
     <section className="bg-brand-cream py-20">
       <div className="mx-auto max-w-7xl px-8">
-        <div className="text-center">
+        <Reveal className="text-center">
           <p className="section-label">{t("label")}</p>
           <h2 className="section-title mt-3">{t("title")}</h2>
 
@@ -124,11 +125,11 @@ export default async function TestimonialsSection(): Promise<React.JSX.Element> 
               )}
             </div>
           )}
-        </div>
+        </Reveal>
 
-        <div className="mt-14">
+        <Reveal delayMs={150} className="mt-14">
           <ReviewsCarousel items={displayItems} />
-        </div>
+        </Reveal>
       </div>
     </section>
   );

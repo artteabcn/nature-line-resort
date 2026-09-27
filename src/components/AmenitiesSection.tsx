@@ -28,6 +28,7 @@ import {
   Bike,
 } from "lucide-react";
 import type { PaidService } from "@/db/schema";
+import Reveal from "./Reveal";
 
 // Keys must stay in sync with FACILITY_ICONS in src/lib/facility-icons.ts.
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -164,18 +165,19 @@ export default function AmenitiesSection(): React.JSX.Element {
   return (
     <section id="amenities" className="bg-brand-blush py-20">
       <div className="mx-auto max-w-7xl px-8">
-        <div className="text-center">
+        <Reveal className="text-center">
           <p className="section-label">{t("label")}</p>
           <h2 className="section-title mt-3">{t("title")}</h2>
           <p className="section-subtitle mx-auto">{t("subtitle")}</p>
-        </div>
+        </Reveal>
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map((item) => {
+          {items.map((item, idx) => {
             const Icon = ICON_MAP[item.icon] ?? Sparkles;
             return (
-              <div
+              <Reveal
                 key={item.icon}
+                delayMs={idx * 70}
                 className="group flex items-start gap-3 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 transition-shadow duration-300 hover:shadow-md"
               >
                 <div className="bg-brand-teal-light text-brand-teal-dark group-hover:bg-brand-teal mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full transition-colors group-hover:text-white">
@@ -187,23 +189,25 @@ export default function AmenitiesSection(): React.JSX.Element {
                   </h3>
                   <p className="mt-1 text-xs leading-relaxed text-gray-500">{item.desc}</p>
                 </div>
-              </div>
+              </Reveal>
             );
           })}
         </div>
 
-        <button
-          onClick={() => setModalOpen(true)}
-          className="group ring-brand-pink/25 hover:ring-brand-pink/50 mt-6 flex w-full items-center justify-between rounded-2xl bg-white px-7 py-5 shadow-sm ring-1 transition-all hover:shadow-md"
-        >
-          <div className="flex items-center gap-4">
-            <div className="bg-brand-pink-light text-brand-pink flex size-10 shrink-0 items-center justify-center rounded-full">
-              <ConciergeBell className="size-5" />
+        <Reveal delayMs={items.length * 70} className="mt-6">
+          <button
+            onClick={() => setModalOpen(true)}
+            className="group ring-brand-pink/25 hover:ring-brand-pink/50 flex w-full items-center justify-between rounded-2xl bg-white px-7 py-5 shadow-sm ring-1 transition-all hover:shadow-md"
+          >
+            <div className="flex items-center gap-4">
+              <div className="bg-brand-pink-light text-brand-pink flex size-10 shrink-0 items-center justify-center rounded-full">
+                <ConciergeBell className="size-5" />
+              </div>
+              <span className="text-brand-ink font-semibold">{t("servicesLink")}</span>
             </div>
-            <span className="text-brand-ink font-semibold">{t("servicesLink")}</span>
-          </div>
-          <ChevronRight className="text-brand-pink size-5 shrink-0 transition-transform group-hover:translate-x-1" />
-        </button>
+            <ChevronRight className="text-brand-pink size-5 shrink-0 transition-transform group-hover:translate-x-1" />
+          </button>
+        </Reveal>
       </div>
 
       {modalOpen && <ServicesModal onClose={() => setModalOpen(false)} />}
