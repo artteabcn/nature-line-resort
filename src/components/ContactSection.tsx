@@ -10,6 +10,7 @@ import { ContactSchema, type ContactInput } from "@/lib/validations/contact";
 import { FacebookIcon, InstagramIcon, SOCIAL_LINKS } from "@/components/SocialIcons";
 import { SITE } from "@/config/site";
 import { useState } from "react";
+import Reveal from "./Reveal";
 
 export default function ContactSection(): React.JSX.Element {
   const t = useTranslations("contact");
@@ -52,15 +53,15 @@ export default function ContactSection(): React.JSX.Element {
   return (
     <section id="contact" className="bg-brand-cream py-20">
       <div className="mx-auto max-w-7xl px-8">
-        <div className="text-center">
+        <Reveal className="text-center">
           <p className="section-label">{t("label")}</p>
           <h2 className="section-title mt-3">{t("title")}</h2>
           <p className="section-subtitle mx-auto">{t("subtitle")}</p>
-        </div>
+        </Reveal>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-2">
           {/* Contact info */}
-          <div className="flex flex-col gap-5">
+          <Reveal className="flex flex-col gap-5">
             {contactItems.map(({ icon: Icon, label, href }) => (
               <div key={label} className="flex items-start gap-4">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center">
@@ -120,77 +121,81 @@ export default function ContactSection(): React.JSX.Element {
                 title="Nature Line Resort location"
               />
             </div>
-          </div>
+          </Reveal>
 
           {/* Contact form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-            <div>
-              <input
-                {...register("name")}
-                placeholder={tf("name")}
-                className={cn(
-                  "focus:border-brand-pink w-full rounded-xl border bg-white px-4 py-3 text-sm transition-colors outline-none",
-                  errors.name ? "border-red-400" : "border-gray-200"
-                )}
-              />
-              {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
-            </div>
+          <Reveal delayMs={120}>
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+              <div>
+                <input
+                  {...register("name")}
+                  placeholder={tf("name")}
+                  className={cn(
+                    "focus:border-brand-pink w-full rounded-xl border bg-white px-4 py-3 text-sm transition-colors outline-none",
+                    errors.name ? "border-red-400" : "border-gray-200"
+                  )}
+                />
+                {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
+              </div>
 
-            <div>
-              <input
-                {...register("email")}
-                type="email"
-                placeholder={tf("email")}
-                className={cn(
-                  "focus:border-brand-pink w-full rounded-xl border bg-white px-4 py-3 text-sm transition-colors outline-none",
-                  errors.email ? "border-red-400" : "border-gray-200"
+              <div>
+                <input
+                  {...register("email")}
+                  type="email"
+                  placeholder={tf("email")}
+                  className={cn(
+                    "focus:border-brand-pink w-full rounded-xl border bg-white px-4 py-3 text-sm transition-colors outline-none",
+                    errors.email ? "border-red-400" : "border-gray-200"
+                  )}
+                />
+                {errors.email && (
+                  <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
                 )}
-              />
-              {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
-            </div>
+              </div>
 
-            <div>
-              <input
-                {...register("phone")}
-                placeholder={tf("phone")}
-                className="focus:border-brand-pink w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-colors outline-none"
-              />
-            </div>
+              <div>
+                <input
+                  {...register("phone")}
+                  placeholder={tf("phone")}
+                  className="focus:border-brand-pink w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-colors outline-none"
+                />
+              </div>
 
-            <div>
-              <textarea
-                {...register("message")}
-                rows={5}
-                placeholder={tf("message")}
-                className={cn(
-                  "focus:border-brand-pink w-full resize-none rounded-xl border bg-white px-4 py-3 text-sm transition-colors outline-none",
-                  errors.message ? "border-red-400" : "border-gray-200"
+              <div>
+                <textarea
+                  {...register("message")}
+                  rows={5}
+                  placeholder={tf("message")}
+                  className={cn(
+                    "focus:border-brand-pink w-full resize-none rounded-xl border bg-white px-4 py-3 text-sm transition-colors outline-none",
+                    errors.message ? "border-red-400" : "border-gray-200"
+                  )}
+                />
+                {errors.message && (
+                  <p className="mt-1 text-xs text-red-500">{errors.message.message}</p>
                 )}
-              />
-              {errors.message && (
-                <p className="mt-1 text-xs text-red-500">{errors.message.message}</p>
+              </div>
+
+              {status === "success" && (
+                <p className="rounded-xl bg-green-50 px-4 py-3 text-sm text-green-700 ring-1 ring-green-200">
+                  {tf("success")}
+                </p>
               )}
-            </div>
+              {status === "error" && (
+                <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-200">
+                  {tf("error")}
+                </p>
+              )}
 
-            {status === "success" && (
-              <p className="rounded-xl bg-green-50 px-4 py-3 text-sm text-green-700 ring-1 ring-green-200">
-                {tf("success")}
-              </p>
-            )}
-            {status === "error" && (
-              <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-200">
-                {tf("error")}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn-pill-primary mt-2 disabled:opacity-60"
-            >
-              {isSubmitting ? tf("sending") : tf("submit")}
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn-pill-primary mt-2 disabled:opacity-60"
+              >
+                {isSubmitting ? tf("sending") : tf("submit")}
+              </button>
+            </form>
+          </Reveal>
         </div>
       </div>
     </section>

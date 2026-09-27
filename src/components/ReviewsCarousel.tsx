@@ -70,7 +70,7 @@ function ReviewCard({ item }: { item: ReviewItem }): React.JSX.Element {
   const isLong = item.quote.length > 150;
 
   return (
-    <figure className="flex h-full flex-col rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
+    <figure className="flex h-full flex-col rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       <div className="flex items-center justify-between">
         <Stars count={item.rating} />
         {item.fromGoogle && <GoogleG />}

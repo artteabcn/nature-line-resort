@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/content";
 import { cn } from "@/lib/utils";
+import Reveal from "./Reveal";
 
 interface MosaicImage {
   slot: string;
@@ -55,9 +56,10 @@ export default async function AboutGalleryMosaic(): Promise<React.JSX.Element> {
 
   return (
     <div className="mx-auto grid aspect-[4/3] w-full max-w-lg grid-cols-3 grid-rows-3 gap-3 lg:max-w-none">
-      {images.map(({ slot, src, alt, className, priority }) => (
-        <div
+      {images.map(({ slot, src, alt, className, priority }, idx) => (
+        <Reveal
           key={slot}
+          delayMs={idx * 90}
           className={cn(
             "group relative overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5",
             className
@@ -72,7 +74,7 @@ export default async function AboutGalleryMosaic(): Promise<React.JSX.Element> {
             priority={priority}
             unoptimized
           />
-        </div>
+        </Reveal>
       ))}
     </div>
   );
