@@ -19,9 +19,11 @@
   --color-brand-coral: #e08060;
   --color-brand-peach: #f0c078;
 
-  /* Ink — teal-tinted, never black. */
-  --color-brand-ink: #c9a840;
-  --color-brand-ink-soft: #4a7a8a;
+  /* Ink — deep navy-teal, never black. Was accidentally aliased to the gold
+     accent (#c9a840), which read at ~2.5:1 contrast on cream/white and made
+     every heading, price and label hard to read. */
+  --color-brand-ink: #14313c;
+  --color-brand-ink-soft: #3f6b7a;
   --color-brand-charcoal: #8a7020; /* alias for legacy uses (footer bg) */
 
   /* Typography */

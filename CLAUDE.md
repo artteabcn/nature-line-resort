@@ -28,18 +28,18 @@ Message files: `messages/{en,fr,de,th}.json` — always update all four simultan
 
 ## Brand
 
-| Token              | Value     | Usage                                         |
-| ------------------ | --------- | --------------------------------------------- |
-| `brand-pink`       | `#1a6b8a` | Primary accent (matches logo bg), CTAs        |
-| `brand-pink-light` | `#c4dfe8` | Backgrounds, badges                           |
-| `brand-pink-dark`  | `#0e4a62` | Hover states                                  |
-| `brand-blush`      | `#f0f7fb` | Soft section backgrounds                      |
-| `brand-cream`      | `#f5fafd` | Page background                               |
-| `brand-teal`       | `#c9a840` | Secondary accent + body text + section labels |
-| `brand-teal-light` | `#f5eac4` | Dividers, soft accents                        |
-| `brand-teal-dark`  | `#8a7020` | Footer bg, dark accents                       |
-| `brand-ink`        | `#c9a840` | Body text (NEVER pure black)                  |
-| `brand-ink-soft`   | `#4a7a8a` | Secondary text                                |
+| Token              | Value     | Usage                                          |
+| ------------------ | --------- | ---------------------------------------------- |
+| `brand-pink`       | `#1a6b8a` | Primary accent (matches logo bg), CTAs         |
+| `brand-pink-light` | `#c4dfe8` | Backgrounds, badges                            |
+| `brand-pink-dark`  | `#0e4a62` | Hover states                                   |
+| `brand-blush`      | `#f0f7fb` | Soft section backgrounds                       |
+| `brand-cream`      | `#f5fafd` | Page background                                |
+| `brand-teal`       | `#c9a840` | Secondary accent + body text + section labels  |
+| `brand-teal-light` | `#f5eac4` | Dividers, soft accents                         |
+| `brand-teal-dark`  | `#8a7020` | Footer bg, dark accents                        |
+| `brand-ink`        | `#14313c` | Body text, headings, prices (NEVER pure black) |
+| `brand-ink-soft`   | `#3f6b7a` | Secondary text                                 |
 
 Fonts: **Libre Baskerville** (h3, refined serif) + **DM Sans** (body, geometric sans) + **Great Vibes** (.section-title and .hero-title — brushed script matching the logo wordmark). Loaded from Google Fonts in `[locale]/layout.tsx`.
 
@@ -216,3 +216,5 @@ When Claude is corrected:
 # Added: 2026-05-06 — `lucide-react` is pinned at v1.9.0 in this repo, which predates brand icons. Do NOT import `Facebook`, `Instagram`, or any brand glyph from `lucide-react` — TS will fail Cloudflare's build. Use the inline SVGs in `src/components/SocialIcons.tsx` instead.
 
 # Added: 2026-05-06 — When adding/changing routes, keep `src/app/sitemap.ts` and `seo.*` i18n keys in sync; missing entries silently degrade SEO without failing the build.
+
+# Added: 2026-09-27 — `--color-brand-ink` was accidentally aliased to the same hex as `--color-brand-teal` (the gold accent, `#c9a840`) in `src/app/globals.css`. Since `brand-ink` drives nearly every heading, price, and body label site-wide (RoomsSection, AboutSection, BookingForm, AmenitiesSection, TestimonialsSection, ReviewsCarousel), the whole site read at ~2.5:1 contrast on white/cream — washed out and hard to read. Fixed to a dark navy-teal (`#14313c`) derived from the `brand-pink` family instead of reusing an accent color for reading text. When introducing a new brand token, grep for its hex value against existing tokens first — an accidental duplicate alias like this fails silently (no build error, just bad contrast).

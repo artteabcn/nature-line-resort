@@ -39,7 +39,7 @@ export default async function RoomsSection(): Promise<React.JSX.Element> {
           {rooms.map((room, idx) => (
             <article
               key={room.id}
-              className="bg-brand-cream flex flex-col overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5"
+              className="bg-brand-cream flex flex-col overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               <div className="relative aspect-[4/3]">
                 <Image

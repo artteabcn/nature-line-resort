@@ -108,17 +108,17 @@ export default function ContactSection(): React.JSX.Element {
               </a>
             </div>
 
-            <div className="bg-brand-sage-light h-40 overflow-hidden rounded-2xl ring-1 ring-black/5">
-            <iframe
-  src="https://maps.google.com/maps?q=9.2120239,99.8636077&z=16&output=embed"
-  width="100%"
-  height="100%"
-  style={{ border: 0 }}
-  allowFullScreen
-  loading="lazy"
-  referrerPolicy="no-referrer-when-downgrade"
-  title="Nature Line Resort location"
-/>
+            <div className="bg-brand-blush h-40 overflow-hidden rounded-2xl ring-1 ring-black/5">
+              <iframe
+                src="https://maps.google.com/maps?q=9.2120239,99.8636077&z=16&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Nature Line Resort location"
+              />
             </div>
           </div>
 
