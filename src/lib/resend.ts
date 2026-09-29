@@ -1,4 +1,4 @@
-const FROM = process.env.RESEND_FROM ?? "noreply@nature-line-resortkhanom.com";
+const FROM = process.env.RESEND_FROM ?? "noreply@naturelineresort.com";
 
 export async function sendEmail(payload: {
   to: string | string[];

@@ -24,7 +24,10 @@
     "headline": "Nature Line Resort",
     "subheadline": "Une chambre d'hôtes chaleureuse et accueillante au cœur de Khanom, Thaïlande.",
     "cta": "Réserver votre séjour",
-    "discover": "Découvrir"
+    "discover": "Découvrir",
+    "location": "Khanom · Nakhon Si Thammarat · Thaïlande",
+    "explore": "Découvrir les chambres",
+    "videoLabel": "Court film de Nature Line Resort : vue aérienne, terrasse de la piscine et jardin tropical"
   },
   "about": {
     "label": "Notre histoire",
@@ -36,7 +39,9 @@
     "stat2Value": "4",
     "stat2Label": "Langues parlées",
     "stat3Value": "100%",
-    "stat3Label": "Service personnalisé"
+    "stat3Label": "Service personnalisé",
+    "imageAlt": "La villa framboise entourée de bananiers et de jungle",
+    "detailAlt": "Salon ombragé donnant sur la piscine"
   },
   "rooms": {
     "label": "Hébergement",
@@ -169,7 +174,7 @@
     "subtitle": "Nous serions ravis de vous entendre. Contactez-nous par e-mail ou via le formulaire ci-dessous.",
     "address": "Khanom, Nakhon Si Thammarat 80210, Thaïlande",
     "phone": "",
-    "email": "hello@nature-line-resortkhanom.com",
+    "email": "hello@naturelineresort.com",
     "whatsapp": "Nous écrire",
     "form": {
       "name": "Votre nom",
@@ -253,5 +258,10 @@
       "houseName": "Nature Line Resort",
       "houseAddress": "Khanom, Nakhon Si Thammarat 80210, Thaïlande"
     }
+  },
+  "band": {
+    "label": "Khanom · Golfe de Thaïlande",
+    "title": "Là où la jungle rencontre une côte paisible",
+    "text": "Palmeraies, couchers de soleil roses et plages préservées — le visage plus doux et plus lent du sud de la Thaïlande, à quelques minutes de votre porte."
   }
 }

@@ -17,7 +17,7 @@
     "db:migrate": "wrangler d1 migrations apply naturelineresort --remote",
     "db:migrate:local": "wrangler d1 migrations apply naturelineresort --local",
     "db:studio": "drizzle-kit studio",
-    "build:cf": "opennextjs-cloudflare build && mv .open-next/worker.js .open-next/_worker.js && cp -r .open-next/assets/. .open-next/ && node -e \"const fs=require('fs');fs.writeFileSync('.open-next/_routes.json',JSON.stringify({version:1,include:['/*'],exclude:['/_next/static/*','/_next/image/*','/images/*','/logo.png','/favicon.ico','/robots.txt','/sitemap.xml']}))\"",
+    "build:cf": "opennextjs-cloudflare build && mv .open-next/worker.js .open-next/_worker.js && cp -r .open-next/assets/. .open-next/ && node -e \"const fs=require('fs');fs.writeFileSync('.open-next/_routes.json',JSON.stringify({version:1,include:['/*'],exclude:['/_next/static/*','/_next/image/*','/images/*','/video/*','/logo.png','/favicon.ico','/robots.txt','/sitemap.xml']}))\"",
     "deploy": "opennextjs-cloudflare build && wrangler pages deploy",
     "preview": "opennextjs-cloudflare build && wrangler pages dev",
     "prepare": "husky"
@@ -41,6 +41,8 @@
     ]
   },
   "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
     "@hookform/resolvers": "^5.2.2",
     "@stripe/react-stripe-js": "^6.3.0",
     "@stripe/stripe-js": "^9.4.0",

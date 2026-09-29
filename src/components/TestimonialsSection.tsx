@@ -5,12 +5,6 @@ import type { GoogleReview } from "@/lib/google-reviews";
 import ReviewsCarousel from "./ReviewsCarousel";
 import type { ReviewItem } from "./ReviewsCarousel";
 
-interface TestimonialItem {
-  quote: string;
-  name: string;
-  origin: string;
-}
-
 function Stars({ count = 5 }: { count?: number }): React.JSX.Element {
   return (
     <div className="flex gap-0.5" aria-label={`${count} out of 5 stars`}>
@@ -52,40 +46,36 @@ function GoogleG(): React.JSX.Element {
   );
 }
 
-export default async function TestimonialsSection(): Promise<React.JSX.Element> {
+export default async function TestimonialsSection(): Promise<React.JSX.Element | null> {
   const t = await getTranslations("testimonials");
   const locale = await getLocale();
-  const staticItems = t.raw("items") as TestimonialItem[];
   const googleData = await getGoogleReviews(locale);
 
   const showGoogle = googleData.reviews.length > 0;
+
+  // Only real, verifiable guest reviews are shown. The template's sample
+  // quotes are never rendered as if they were genuine — no Google reviews,
+  // no section.
+  if (!showGoogle) return null;
 
   const googleMapsUrl = process.env.GOOGLE_PLACE_ID
     ? `https://www.google.com/maps/place/?q=place_id:${process.env.GOOGLE_PLACE_ID}`
     : undefined;
 
-  const displayItems: ReviewItem[] = showGoogle
-    ? googleData.reviews.map((r: GoogleReview) => ({
-        quote: r.text,
-        name: r.displayName,
-        sub: r.relativeTime,
-        rating: r.rating,
-        fromGoogle: true,
-      }))
-    : staticItems.map((item) => ({
-        quote: item.quote,
-        name: item.name,
-        sub: item.origin,
-        rating: 5,
-        fromGoogle: false,
-      }));
+  const displayItems: ReviewItem[] = googleData.reviews.map((r: GoogleReview) => ({
+    quote: r.text,
+    name: r.displayName,
+    sub: r.relativeTime,
+    rating: r.rating,
+    fromGoogle: true,
+  }));
 
   return (
-    <section className="bg-brand-cream py-20">
-      <div className="mx-auto max-w-7xl px-8">
+    <section className="bg-brand-blush/60 py-24 md:py-32">
+      <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <div className="text-center">
           <p className="section-label">{t("label")}</p>
-          <h2 className="section-title mt-3">{t("title")}</h2>
+          <h2 className="section-title mt-5">{t("title")}</h2>
 
           {showGoogle && googleData.placeRating && (
             <div className="mt-6 flex justify-center">

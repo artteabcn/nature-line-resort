@@ -28,22 +28,29 @@ Message files: `messages/{en,fr,de,th}.json` — always update all four simultan
 
 ## Brand
 
-| Token              | Value     | Usage                                          |
-| ------------------ | --------- | ---------------------------------------------- |
-| `brand-pink`       | `#1a6b8a` | Primary accent (matches logo bg), CTAs         |
-| `brand-pink-light` | `#c4dfe8` | Backgrounds, badges                            |
-| `brand-pink-dark`  | `#0e4a62` | Hover states                                   |
-| `brand-blush`      | `#f0f7fb` | Soft section backgrounds                       |
-| `brand-cream`      | `#f5fafd` | Page background                                |
-| `brand-teal`       | `#c9a840` | Secondary accent + body text + section labels  |
-| `brand-teal-light` | `#f5eac4` | Dividers, soft accents                         |
-| `brand-teal-dark`  | `#8a7020` | Footer bg, dark accents                        |
-| `brand-ink`        | `#14313c` | Body text, headings, prices (NEVER pure black) |
-| `brand-ink-soft`   | `#3f6b7a` | Secondary text                                 |
+Palette is taken from the property itself — jungle green, the raspberry of the walls/roofs, warm ivory. Token **names** are legacy (shared with the booking flow + CMS); only values changed in the Sept 2026 redesign.
 
-Fonts: **Libre Baskerville** (h3, refined serif) + **DM Sans** (body, geometric sans) + **Great Vibes** (.section-title and .hero-title — brushed script matching the logo wordmark). Loaded from Google Fonts in `[locale]/layout.tsx`.
+| Token              | Value     | Usage                                           |
+| ------------------ | --------- | ----------------------------------------------- |
+| `brand-pink`       | `#24453a` | Primary (jungle green): buttons, active states  |
+| `brand-pink-light` | `#dfe9e2` | Soft green backgrounds                          |
+| `brand-pink-dark`  | `#16302a` | Hover states                                    |
+| `brand-blush`      | `#efe8da` | Alternate section background (sand)             |
+| `brand-cream`      | `#f7f3ea` | Page background (ivory)                         |
+| `brand-teal`       | `#a3294f` | Accent (bougainvillea raspberry): labels, icons |
+| `brand-teal-light` | `#f4dfe6` | Icon chips, selection                           |
+| `brand-ink`        | `#1c2a24` | Headings + body (NEVER pure black)              |
+| `brand-ink-soft`   | `#56645c` | Secondary text                                  |
+| `brand-charcoal`   | `#1f3a31` | Nav text on light, footer background            |
 
-Design reference: Orchid Lodge Samui (orchidlodgesamui.com) — boutique tropical aesthetic. Pink replaces sage as primary; teal replaces sage as secondary.
+Fonts: **Fraunces Variable** (display serif, `.section-title` / `.hero-title`) + **DM Sans Variable** (body). Self-hosted via `@fontsource-variable/*` imported in `globals.css` — no Google Fonts request. No script fonts.
+
+## Motion (Sept 2026 redesign)
+
+- **Hero**: `public/video/hero-loop.{webm,mp4}` + `hero-loop-sm.mp4` (mobile) + `hero-poster.jpg`, rendered with **HyperFrames** from the property photos (16s seamless loop, 1280×720, no text baked in — copy stays live HTML for i18n/SEO). `HeroVideo.tsx` only plays when not `prefers-reduced-motion` and not Save-Data; poster otherwise. Re-render when the owner supplies better photos.
+- **Parallax / reveals**: pure CSS scroll-driven animations in `globals.css` (`.parallax-media`, `.parallax-media-strong`, `.parallax-float`, `.hero-parallax-*`, `.reveal-clip`, `.reveal-up`). No scroll listeners, no JS. Wrapped in `@supports (animation-timeline: view())` + `prefers-reduced-motion: no-preference` — unsupported browsers get the static layout.
+- Interaction polish follows Emil Kowalski's rules: custom ease-out curves (`--ease-out-strong`), specific transition properties (never `transition: all`), `scale(0.97)` press feedback, hover effects gated behind `(hover: hover) and (pointer: fine)`.
+- Testimonials render **only real Google reviews**; with none, the section is hidden (the template's sample quotes are never shown as genuine).
 
 ---
 
@@ -173,7 +180,7 @@ overrides silently fall back to `/public/images/*`.
 **Auth:** Cloudflare Access at the edge. Set up in the dashboard:
 
 1. Zero Trust → Access → Applications → Add → Self-hosted
-2. Application domain: `nature-line-resortkhanom.com`, paths: `/content/*` and `/api/admin/*`
+2. Application domain: `naturelineresort.com`, paths: `/content/*` and `/api/admin/*`
 3. Policy: include — emails are one of (greg@arkadya.tech, bradley@arkadya.tech, naturelineresort.lamai@gmail.com)
 4. Identity provider: One-time PIN (sends a 6-digit code by email) or Google OAuth
 5. Copy the Application AUD tag → set as `CF_ACCESS_AUD` env var in Pages
@@ -216,5 +223,7 @@ When Claude is corrected:
 # Added: 2026-05-06 — `lucide-react` is pinned at v1.9.0 in this repo, which predates brand icons. Do NOT import `Facebook`, `Instagram`, or any brand glyph from `lucide-react` — TS will fail Cloudflare's build. Use the inline SVGs in `src/components/SocialIcons.tsx` instead.
 
 # Added: 2026-05-06 — When adding/changing routes, keep `src/app/sitemap.ts` and `seo.*` i18n keys in sync; missing entries silently degrade SEO without failing the build.
+
+# Added: 2026-09-29 — GOOGLE_PLACES_API_KEY must be a Pages secret, never in wrangler.toml [vars] (it was committed to this public repo — key rotated).
 
 # Added: 2026-09-27 — `--color-brand-ink` was accidentally aliased to the same hex as `--color-brand-teal` (the gold accent, `#c9a840`) in `src/app/globals.css`. Since `brand-ink` drives nearly every heading, price, and body label site-wide (RoomsSection, AboutSection, BookingForm, AmenitiesSection, TestimonialsSection, ReviewsCarousel), the whole site read at ~2.5:1 contrast on white/cream — washed out and hard to read. Fixed to a dark navy-teal (`#14313c`) derived from the `brand-pink` family instead of reusing an accent color for reading text. When introducing a new brand token, grep for its hex value against existing tokens first — an accidental duplicate alias like this fails silently (no build error, just bad contrast).

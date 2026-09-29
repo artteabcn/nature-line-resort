@@ -7,6 +7,7 @@ import AboutSection from "@/components/AboutSection";
 import RoomsSection from "@/components/RoomsSection";
 import AmenitiesSection from "@/components/AmenitiesSection";
 import GalleryGrid from "@/components/GalleryGrid";
+import ParallaxBand from "@/components/ParallaxBand";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -107,6 +108,7 @@ export default async function HomePage({ params }: PageProps): Promise<React.JSX
       <HeroSection />
       <AboutSection />
       <RoomsSection />
+      <ParallaxBand />
       <AmenitiesSection />
       <TestimonialsSection />
       <GalleryGrid />

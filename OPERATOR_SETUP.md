@@ -26,7 +26,7 @@ wasn't finished — read the relevant files before assuming the next step.
 To verify the production site is healthy without poking anything destructive:
 
 ```powershell
-Invoke-WebRequest -Uri "https://nature-line-resortkhanom.com/api/health" -UseBasicParsing
+Invoke-WebRequest -Uri "https://naturelineresort.com/api/health" -UseBasicParsing
 # expect: {"ok":true}
 ```
 
@@ -132,8 +132,8 @@ When something looks wrong, this table tells you where to go look.
 | ------------------ | ----------------------------------------------------- | ----------------------- |
 | Source code        | GitHub (`origin/main`)                                | Yes                     |
 | Schema definitions | `src/db/schema.ts` (Drizzle)                          | Yes — migrations derive |
-| Database content   | Cloudflare D1 (`naturelineresort` database)                  | Yes — single source     |
-| Uploaded images    | Cloudflare R2 (`naturelineresort-media` bucket)              | Yes — single source     |
+| Database content   | Cloudflare D1 (`naturelineresort` database)           | Yes — single source     |
+| Uploaded images    | Cloudflare R2 (`naturelineresort-media` bucket)       | Yes — single source     |
 | Default images     | `public/` (in git)                                    | Yes — for unset slots   |
 | Localized text     | `messages/*.json` (defaults) + D1 `content_overrides` | Merged at SSR           |
 | Brand tokens       | `src/app/globals.css` (`@theme` variables)            | Yes                     |
@@ -317,18 +317,18 @@ working correctly when it filters those out.
 
 ## Useful URLs (bookmark these)
 
-| Service                  | URL                                                                            |
-| ------------------------ | ------------------------------------------------------------------------------ |
-| Production site          | <https://nature-line-resortkhanom.com>                                                |
+| Service                  | URL                                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------------- |
+| Production site          | <https://naturelineresort.com>                                                        |
 | Pages dashboard          | <https://dash.cloudflare.com/?to=/:account/pages/view/naturelineresort>               |
-| D1 dashboard             | <https://dash.cloudflare.com/?to=/:account/workers/d1>                         |
+| D1 dashboard             | <https://dash.cloudflare.com/?to=/:account/workers/d1>                                |
 | R2 dashboard             | <https://dash.cloudflare.com/?to=/:account/r2/default/buckets/naturelineresort-media> |
-| Cloudflare Access        | <https://one.dash.cloudflare.com/?to=/:team/access/apps>                       |
-| Resend                   | <https://resend.com/domains>                                                   |
-| Stripe Dashboard         | <https://dashboard.stripe.com>                                                 |
-| Smoobu (the PMS)         | <https://login.smoobu.com>                                                     |
-| GitHub repo              | <https://github.com/artteabcn/PinkHouse>                                       |
-| Cloudflare Email Routing | <https://dash.cloudflare.com/?to=/:account/:zone/email/routing>                |
+| Cloudflare Access        | <https://one.dash.cloudflare.com/?to=/:team/access/apps>                              |
+| Resend                   | <https://resend.com/domains>                                                          |
+| Stripe Dashboard         | <https://dashboard.stripe.com>                                                        |
+| Smoobu (the PMS)         | <https://login.smoobu.com>                                                            |
+| GitHub repo              | <https://github.com/artteabcn/PinkHouse>                                              |
+| Cloudflare Email Routing | <https://dash.cloudflare.com/?to=/:account/:zone/email/routing>                       |
 
 ---
 

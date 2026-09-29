@@ -24,7 +24,10 @@
     "headline": "Nature Line Resort",
     "subheadline": "A warm, welcoming bed & breakfast nestled in the heart of Khanom, Thailand.",
     "cta": "Book Your Stay",
-    "discover": "Discover More"
+    "discover": "Discover More",
+    "location": "Khanom · Nakhon Si Thammarat · Thailand",
+    "explore": "Explore the rooms",
+    "videoLabel": "Short film of Nature Line Resort: aerial view, pool terrace and tropical garden"
   },
   "about": {
     "label": "Our Story",
@@ -36,7 +39,9 @@
     "stat2Value": "4",
     "stat2Label": "Languages spoken",
     "stat3Value": "100%",
-    "stat3Label": "Personalised service"
+    "stat3Label": "Personalised service",
+    "imageAlt": "The raspberry villa surrounded by banana palms and jungle",
+    "detailAlt": "Shaded lounge overlooking the pool"
   },
   "rooms": {
     "label": "Accommodation",
@@ -169,7 +174,7 @@
     "subtitle": "We'd love to hear from you. Reach us by email or use the form below.",
     "address": "Khanom, Nakhon Si Thammarat 80210, Thailand",
     "phone": "",
-    "email": "hello@nature-line-resortkhanom.com",
+    "email": "hello@naturelineresort.com",
     "whatsapp": "Chat with us",
     "form": {
       "name": "Your Name",
@@ -253,5 +258,10 @@
       "houseName": "Nature Line Resort",
       "houseAddress": "Khanom, Nakhon Si Thammarat 80210, Thailand"
     }
+  },
+  "band": {
+    "label": "Khanom · Gulf of Thailand",
+    "title": "Where the jungle meets the quiet coast",
+    "text": "Palm groves, pink sunsets and uncrowded beaches — a slower, gentler side of southern Thailand, minutes from your door."
   }
 }

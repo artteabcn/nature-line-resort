@@ -1,40 +1,58 @@
 @import "tailwindcss";
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/dm-sans";
 @source "../../**/*.{ts,tsx}";
 
 @theme {
-  /* Nature Line Resort brand colours — pink + blue-green, refined boutique */
-  --color-brand-pink: #1a6b8a;
-  --color-brand-pink-light: #c4dfe8;
-  --color-brand-pink-dark: #0e4a62;
-  --color-brand-blush: #f0f7fb;
-  --color-brand-cream: #f5fafd;
+  /* Nature Line Resort — palette taken from the property itself:
+     jungle green (primary), bougainvillea raspberry of the walls and roofs
+     (accent, used sparingly), warm ivory paper (surfaces).
+     Token NAMES are legacy (shared with the booking flow and CMS) — only the
+     values changed, so every page picks up the new identity at once. */
 
-  /* Blue-green — drives ALL text colours and accents */
-  --color-brand-teal: #c9a840;
-  --color-brand-teal-light: #f5eac4;
-  --color-brand-teal-dark: #8a7020;
-  --color-brand-teal-deep: #504010;
+  /* Primary — jungle green (buttons, active states) */
+  --color-brand-pink: #24453a;
+  --color-brand-pink-light: #dfe9e2;
+  --color-brand-pink-dark: #16302a;
+  --color-brand-blush: #efe8da;
+  --color-brand-cream: #f7f3ea;
+
+  /* Accent — bougainvillea raspberry (labels, icons, small highlights) */
+  --color-brand-teal: #a3294f;
+  --color-brand-teal-light: #f4dfe6;
+  --color-brand-teal-dark: #7c1d3c;
+  --color-brand-teal-deep: #4c1025;
 
   /* Tropical highlights (used sparingly) */
-  --color-brand-coral: #e08060;
-  --color-brand-peach: #f0c078;
+  --color-brand-coral: #d9785a;
+  --color-brand-peach: #eec48a;
 
-  /* Ink — deep navy-teal, never black. Was accidentally aliased to the gold
-     accent (#c9a840), which read at ~2.5:1 contrast on cream/white and made
-     every heading, price and label hard to read. */
-  --color-brand-ink: #14313c;
-  --color-brand-ink-soft: #3f6b7a;
-  --color-brand-charcoal: #8a7020; /* alias for legacy uses (footer bg) */
+  /* Ink — deep green-black, never pure black */
+  --color-brand-ink: #1c2a24;
+  --color-brand-ink-soft: #56645c;
+  --color-brand-charcoal: #1f3a31; /* nav text on light + footer background */
 
-  /* Typography */
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Libre Baskerville", ui-serif, Georgia, serif;
-  --font-script: "Great Vibes", "Brush Script MT", cursive;
+  /* Typography — self-hosted variable fonts (no third-party font requests) */
+  --font-sans: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces Variable", ui-serif, Georgia, serif;
+  --font-script: "Fraunces Variable", ui-serif, Georgia, serif;
+
+  /* Motion — strong custom curves (never the weak built-ins) */
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {
@@ -48,45 +66,244 @@
   h3 {
     color: var(--color-brand-ink);
     font-family: var(--font-serif);
-    font-weight: 600;
-    letter-spacing: -0.005em;
+    font-weight: 400;
+    font-optical-sizing: auto;
+    letter-spacing: -0.015em;
+  }
+
+  ::selection {
+    background: var(--color-brand-teal-light);
+    color: var(--color-brand-teal-deep);
   }
 }
 
 @layer utilities {
   .font-script {
-    font-family: var(--font-script);
+    font-family: var(--font-serif);
+    font-style: italic;
   }
 
   .section-label {
-    @apply text-brand-teal text-xs font-semibold tracking-[0.3em] uppercase;
+    @apply text-brand-teal inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] uppercase;
+  }
+  .section-label::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.6;
   }
 
   .section-title {
-    @apply font-script text-brand-teal text-5xl leading-[1.05] md:text-6xl lg:text-7xl;
-    font-weight: 400;
-    letter-spacing: 0;
+    @apply text-brand-ink font-serif text-4xl leading-[1.04] md:text-5xl lg:text-6xl;
+    font-weight: 380;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
   }
 
   .hero-title {
-    @apply font-script text-6xl leading-[1.05] text-white md:text-7xl lg:text-[7.5rem];
-    font-weight: 400;
-    letter-spacing: 0;
+    @apply font-serif text-5xl leading-[0.98] text-white sm:text-6xl md:text-7xl lg:text-[6.75rem];
+    font-weight: 340;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
   }
 
   .section-subtitle {
-    @apply mt-5 max-w-2xl text-base leading-relaxed text-[color:var(--color-brand-ink-soft)] md:text-lg;
+    @apply text-brand-ink-soft mt-5 max-w-2xl text-base leading-relaxed md:text-lg;
+    text-wrap: pretty;
   }
 
+  /* Buttons — specific transition properties, 160ms press feedback (never `transition: all`) */
   .btn-pill-primary {
-    @apply bg-brand-pink hover:bg-brand-pink-dark inline-flex items-center justify-center rounded-full px-7 py-3 text-xs font-semibold tracking-[0.2em] text-white uppercase transition-colors;
+    @apply bg-brand-pink inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-xs font-semibold tracking-[0.18em] text-white uppercase;
+    transition:
+      background-color 200ms ease,
+      transform 160ms var(--ease-out-strong);
   }
-
   .btn-pill-outline {
-    @apply border-brand-teal text-brand-teal hover:bg-brand-teal inline-flex items-center justify-center rounded-full border px-6 py-2.5 text-[11px] font-semibold tracking-[0.2em] uppercase transition-colors hover:text-white;
+    @apply border-brand-pink text-brand-pink inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3 text-[11px] font-semibold tracking-[0.18em] uppercase;
+    transition:
+      background-color 200ms ease,
+      color 200ms ease,
+      transform 160ms var(--ease-out-strong);
+  }
+  .btn-pill-light {
+    @apply text-brand-ink inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-xs font-semibold tracking-[0.18em] uppercase;
+    transition:
+      background-color 200ms ease,
+      transform 160ms var(--ease-out-strong);
+  }
+  .btn-pill-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/55 px-7 py-3.5 text-xs font-semibold tracking-[0.18em] text-white uppercase backdrop-blur-[2px];
+    transition:
+      background-color 200ms ease,
+      border-color 200ms ease,
+      transform 160ms var(--ease-out-strong);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-pill-primary:hover {
+      background-color: var(--color-brand-pink-dark);
+    }
+    .btn-pill-outline:hover {
+      background-color: var(--color-brand-pink);
+      color: white;
+    }
+    .btn-pill-light:hover {
+      background-color: var(--color-brand-blush);
+    }
+    .btn-pill-ghost:hover {
+      background-color: rgb(255 255 255 / 0.12);
+      border-color: white;
+    }
+  }
+  .btn-pill-primary:active,
+  .btn-pill-outline:active,
+  .btn-pill-light:active,
+  .btn-pill-ghost:active {
+    transform: scale(0.97);
   }
 
-  .btn-pill-light {
-    @apply hover:text-brand-ink inline-flex items-center justify-center rounded-full border border-white/70 px-7 py-3 text-xs font-semibold tracking-[0.2em] text-white uppercase backdrop-blur-sm transition-colors hover:bg-white;
+  /* Hero entrance — staggered, ease-out, first paint only */
+  .hero-rise {
+    animation: hero-rise 1000ms var(--ease-out-strong) both;
+    animation-delay: calc(var(--i, 0) * 90ms + 150ms);
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: hero-fade 400ms ease both;
+  }
+}
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Parallax & scroll reveals — native CSS scroll-driven animations.
+   Runs on the compositor (no scroll listeners, no JS, no layout thrash).
+   Browsers without support, and anyone with reduced motion, get the calm
+   static layout: every element is fully visible by default.
+   --------------------------------------------------------------------------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Image drifts inside its frame (frame must be overflow:hidden). */
+    .parallax-media {
+      animation: parallax-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    .parallax-media-strong {
+      animation: parallax-drift-strong linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    /* Element itself floats at a different speed than the page (depth). */
+    .parallax-float {
+      animation: parallax-float linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    /* Hero: media sinks slower than the page, copy lifts and fades. */
+    .hero-parallax-media {
+      animation: hero-media linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+    }
+    .hero-parallax-copy {
+      animation: hero-copy linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 80vh;
+    }
+
+    /* Image reveal on entry — clip from the bottom, settle the scale. */
+    .reveal-clip {
+      animation: reveal-clip linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 75%;
+    }
+    /* Copy reveal on entry. */
+    .reveal-up {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
+}
+
+@keyframes parallax-drift {
+  from {
+    transform: translate3d(0, -7%, 0) scale(1.16);
+  }
+  to {
+    transform: translate3d(0, 7%, 0) scale(1.16);
+  }
+}
+@keyframes parallax-drift-strong {
+  from {
+    transform: translate3d(0, -14%, 0) scale(1.32);
+  }
+  to {
+    transform: translate3d(0, 14%, 0) scale(1.32);
+  }
+}
+@keyframes parallax-float {
+  from {
+    transform: translate3d(0, 60px, 0);
+  }
+  to {
+    transform: translate3d(0, -60px, 0);
+  }
+}
+@keyframes hero-media {
+  to {
+    transform: translate3d(0, 28vh, 0) scale(1.06);
+  }
+}
+@keyframes hero-copy {
+  to {
+    transform: translate3d(0, -10vh, 0);
+    opacity: 0;
+  }
+}
+@keyframes reveal-clip {
+  from {
+    clip-path: inset(18% 0 0 0 round 1.25rem);
+    transform: scale(1.04);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 1.25rem);
+    transform: none;
+  }
+}
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }

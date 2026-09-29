@@ -13,16 +13,17 @@ migrations_dir = "drizzle"
 # CMS media bucket — created once via:
 #   wrangler r2 bucket create naturelineresort-media
 # Public objects are served from MEDIA_PUBLIC_URL (env var pointing at the
-# R2 public bucket URL or a custom domain like media.nature-line-resortkhanom.com).
+# R2 public bucket URL or a custom domain like media.naturelineresort.com).
 [[r2_buckets]]
 binding = "MEDIA"
 bucket_name = "naturelineresort-media"
 
 [vars]
 # Comma-separated — owner-email.ts splits on "," to notify all recipients
-OWNER_EMAIL = "hello@nature-line-resortkhanom.com"
-OWNER_FROM_EMAIL = "hello@nature-line-resortkhanom.com"
+OWNER_EMAIL = "hello@naturelineresort.com"
+OWNER_FROM_EMAIL = "hello@naturelineresort.com"
 GOOGLE_PLACE_ID = "ChIJE6Dborx9VDARXuKCWsE8eS0"
-GOOGLE_PLACES_API_KEY = "AIzaSyD5ozSU7xX2evdLHdqhdO-vlptmU9et4I0"
+# GOOGLE_PLACES_API_KEY is a Pages *secret* — never commit it here:
+#   wrangler pages secret put GOOGLE_PLACES_API_KEY --project-name nature-line-resort
 [dev]
 port = 8788

@@ -10,16 +10,16 @@ A boutique B&B website for Nature Line Resort (Khanom). Marketing site
 
 ## Stack snapshot
 
-| Layer     | Choice                                                                |
-| --------- | --------------------------------------------------------------------- |
-| Framework | Next.js 15 (App Router) via `@opennextjs/cloudflare`                  |
-| Hosting   | Cloudflare **Pages** (D1 binding `DB`) — see Gotchas                  |
-| i18n      | `next-intl` — locales: en (default), fr, de, th                       |
-| Styling   | Tailwind v4 + brand tokens (see `CLAUDE.md`)                          |
-| Forms     | React Hook Form + Zod                                                 |
-| ORM       | Drizzle + D1                                                          |
-| Booking   | Smoobu REST API (channel 0, 6× `standard` units)                |
-| Email     | Resend (guest confirmations + owner alerts, single provider)          |
+| Layer     | Choice                                                                          |
+| --------- | ------------------------------------------------------------------------------- |
+| Framework | Next.js 15 (App Router) via `@opennextjs/cloudflare`                            |
+| Hosting   | Cloudflare **Pages** (D1 binding `DB`) — see Gotchas                            |
+| i18n      | `next-intl` — locales: en (default), fr, de, th                                 |
+| Styling   | Tailwind v4 + brand tokens (see `CLAUDE.md`)                                    |
+| Forms     | React Hook Form + Zod                                                           |
+| ORM       | Drizzle + D1                                                                    |
+| Booking   | Smoobu REST API (channel 0, 6× `standard` units)                                |
+| Email     | Resend (guest confirmations + owner alerts, single provider)                    |
 | Phone     | `PLACEHOLDER_PHONE_DISPLAY` — sourced from `SITE.phone` in `src/config/site.ts` |
 
 ---
@@ -89,7 +89,7 @@ On Smoobu failure the intent is **canceled** so the guest is never charged.
   - Confirm the Stripe account is provisioned for THB charges (Thailand
     region or multi-currency-enabled).
   - Register webhook in Stripe Dashboard pointing to
-    `https://nature-line-resortkhanom.com/api/stripe/webhook` for events
+    `https://naturelineresort.com/api/stripe/webhook` for events
     `payment_intent.succeeded`, `payment_intent.canceled`,
     `payment_intent.payment_failed`, `charge.refunded`. Copy the signing
     secret into `STRIPE_WEBHOOK_SECRET`.
@@ -109,13 +109,13 @@ On Smoobu failure the intent is **canceled** so the guest is never charged.
 - **Custom OG image** — currently reusing `/images/main.jpeg`. A
   purpose-built 1200×630 hero with logo + tagline overlay performs
   better on social shares.
-- **Search Console** — submit sitemap at `https://nature-line-resortkhanom.com/sitemap.xml`
+- **Search Console** — submit sitemap at `https://naturelineresort.com/sitemap.xml`
   and add the verification meta tag.
 - **Reviews** — once Booking/Google reviews exist, add `AggregateRating`
   to the `LodgingBusiness` schema.
 - **Footer keys** — `footer.*` i18n keys were removed when the footer
   was stripped down. If a richer footer ever returns, re-add them.
-- **Resend domain verification** — confirm `nature-line-resortkhanom.com` is
+- **Resend domain verification** — confirm `naturelineresort.com` is
   verified in the Resend dashboard, otherwise owner emails will 403
   at runtime even though the build succeeds.
 

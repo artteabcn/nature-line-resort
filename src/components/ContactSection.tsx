@@ -50,15 +50,15 @@ export default function ContactSection(): React.JSX.Element {
   const hasWhatsApp = SITE.phone.waMe.length > 0;
 
   return (
-    <section id="contact" className="bg-brand-cream py-20">
-      <div className="mx-auto max-w-7xl px-8">
+    <section id="contact" className="bg-brand-cream py-24 md:py-36">
+      <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <div className="text-center">
           <p className="section-label">{t("label")}</p>
-          <h2 className="section-title mt-3">{t("title")}</h2>
+          <h2 className="section-title mt-5">{t("title")}</h2>
           <p className="section-subtitle mx-auto">{t("subtitle")}</p>
         </div>
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-2">
+        <div className="mt-14 grid gap-12 lg:grid-cols-2">
           {/* Contact info */}
           <div className="flex flex-col gap-5">
             {contactItems.map(({ icon: Icon, label, href }) => (
@@ -67,11 +67,14 @@ export default function ContactSection(): React.JSX.Element {
                   <Icon className="text-brand-pink size-5" />
                 </div>
                 {href ? (
-                  <a href={href} className="hover:text-brand-pink mt-1 text-gray-700">
+                  <a
+                    href={href}
+                    className="hover:text-brand-pink text-brand-ink mt-1 transition-colors duration-200"
+                  >
                     {label}
                   </a>
                 ) : (
-                  <p className="mt-1 text-gray-700">{label}</p>
+                  <p className="text-brand-ink mt-1">{label}</p>
                 )}
               </div>
             ))}
@@ -93,7 +96,7 @@ export default function ContactSection(): React.JSX.Element {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1877F2] text-white transition-opacity hover:opacity-90"
+                className="border-brand-pink/25 text-brand-pink hover:bg-brand-pink flex h-12 w-12 items-center justify-center rounded-full border transition-[background-color,color,transform] duration-200 ease-out hover:text-white active:scale-95"
               >
                 <FacebookIcon className="h-5 w-5" />
               </a>
@@ -102,13 +105,13 @@ export default function ContactSection(): React.JSX.Element {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-tr from-[#fdc468] via-[#dc2743] to-[#bc1888] text-white transition-opacity hover:opacity-90"
+                className="border-brand-pink/25 text-brand-pink hover:bg-brand-pink flex h-12 w-12 items-center justify-center rounded-full border transition-[background-color,color,transform] duration-200 ease-out hover:text-white active:scale-95"
               >
                 <InstagramIcon className="h-5 w-5" />
               </a>
             </div>
 
-            <div className="bg-brand-blush h-40 overflow-hidden rounded-2xl ring-1 ring-black/5">
+            <div className="bg-brand-blush h-72 overflow-hidden rounded-[1.25rem] ring-1 ring-black/5">
               <iframe
                 src="https://maps.google.com/maps?q=9.2120239,99.8636077&z=16&output=embed"
                 width="100%"

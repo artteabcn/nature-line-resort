@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Nature Line Resort — hero loop</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1280px;
+        height: 720px;
+        overflow: hidden;
+        background: #16302a;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .frame {
+        position: absolute;
+        inset: 0;
+        will-change: transform, opacity;
+      }
+      .frame {
+        background-size: cover;
+        background-position: center;
+      }
+      /* Warm, low-contrast grade so the site's text overlay always reads. */
+      #grade {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(8, 20, 16, 0.45) 100%),
+          linear-gradient(180deg, rgba(22, 48, 42, 0.18), rgba(22, 48, 42, 0.1));
+        mix-blend-mode: multiply;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="16"
+      data-width="1280"
+      data-height="720"
+    >
+      <div id="f-aerial" class="clip frame" data-start="0" data-duration="4.6" data-track-index="0" style="background-image:url(assets/main.jpg)"></div>
+      <div id="f-lounge" class="clip frame" data-start="3.4" data-duration="5.2" data-track-index="1" style="background-image:url(assets/main2.jpg)"></div>
+      <div id="f-villa" class="clip frame" data-start="7.4" data-duration="5.2" data-track-index="2" style="background-image:url(assets/main3.jpg)"></div>
+      <div id="f-pool" class="clip frame" data-start="11.4" data-duration="4.6" data-track-index="3" style="background-image:url(assets/main4.jpg)"></div>
+      <!-- Loop closer: fades the opening frame back in, frozen at its t=0 transform,
+           so frame 16s == frame 0s and the <video loop> seam is invisible. -->
+      <div id="f-close" class="clip frame" data-start="14.8" data-duration="1.2" data-track-index="4" style="background-image:url(assets/main.jpg)"></div>
+      <div id="grade" class="clip" data-start="0" data-duration="16" data-track-index="5"></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const XF = 1.2; // crossfade length
+      const ease = "sine.inOut";
+
+      // Stable baselines (one per element) so any seek resolves deterministically.
+      gsap.set("#f-aerial", { opacity: 1, scale: 1.14, xPercent: -1.5 }, 0);
+      gsap.set("#f-lounge", { opacity: 0, scale: 1.02, xPercent: -1 }, 0);
+      gsap.set("#f-villa", { opacity: 0, scale: 1.1, yPercent: 2 }, 0);
+      gsap.set("#f-pool", { opacity: 0, scale: 1.0, xPercent: 1 }, 0);
+      gsap.set("#f-close", { opacity: 0, scale: 1.14, xPercent: -1.5 }, 0);
+
+      // 1 — aerial: slow pull-back revealing the resort
+      tl.to("#f-aerial", { scale: 1.0, xPercent: 0, duration: 4.6, ease }, 0);
+
+      // 2 — pool lounge: push-in drifting right
+      tl.to("#f-lounge", { opacity: 1, duration: XF, ease: "none" }, 3.4);
+      tl.to("#f-lounge", { scale: 1.1, xPercent: 1.5, duration: 5.2, ease }, 3.4);
+
+      // 3 — villa in the jungle: upward drift
+      tl.to("#f-villa", { opacity: 1, duration: XF, ease: "none" }, 7.4);
+      tl.to("#f-villa", { scale: 1.02, yPercent: -1.5, duration: 5.2, ease }, 7.4);
+
+      // 4 — raspberry pool terrace: push-in
+      tl.to("#f-pool", { opacity: 1, duration: XF, ease: "none" }, 11.4);
+      tl.to("#f-pool", { scale: 1.09, xPercent: -1, duration: 4.6, ease }, 11.4);
+
+      // loop closer — the aerial's exact opening state fades back in
+      tl.to("#f-close", { opacity: 1, duration: XF, ease: "none" }, 14.8);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

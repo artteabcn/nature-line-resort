@@ -1,6 +1,6 @@
 import { SOCIAL_LINKS } from "@/components/SocialIcons";
 
-export const SITE_URL = "https://nature-line-resort.pages.dev";
+export const SITE_URL = "https://naturelineresort.com";
 
 export const SITE = {
   name: "Nature Line Resort",
@@ -8,7 +8,7 @@ export const SITE = {
   url: SITE_URL,
   defaultLocale: "en",
   locales: ["en", "fr", "de", "th"] as const,
-  email: "hello@nature-line-resortkhanom.com",
+  email: "hello@naturelineresort.com",
   phone: {
     e164: "",
     display: "",
@@ -23,8 +23,8 @@ export const SITE = {
     addressCountry: "TH",
   },
   geo: {
-    latitude: 9.1900,
-    longitude: 99.8400,
+    latitude: 9.19,
+    longitude: 99.84,
   },
   priceRange: "฿฿",
   social: SOCIAL_LINKS,
